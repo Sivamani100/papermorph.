@@ -1,0 +1,704 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Background & Surface - Light Theme */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+
+    /* Primary Colors - Light Theme */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary Colors - Light Theme */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 0 0% 15%;
+
+    /* Accent Colors - Light Theme */
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Muted Colors - Light Theme */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders & Inputs */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 60%;
+
+    /* Border Radius */
+    --radius: 0.75rem;
+
+    /* Sidebar Colors - Light Theme */
+    --sidebar-background: 220 14% 98%;
+    --sidebar-foreground: 220 9% 46%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 0 0% 15%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217 91% 60%;
+
+    /* Custom tokens */
+    --surface: 0 0% 100%;
+    --surface-elevated: 0 0% 100%;
+    --surface-hover: 220 14% 97%;
+    --text-primary: 0 0% 8%;
+    --text-secondary: 220 9% 46%;
+    --text-muted: 220 9% 64%;
+    --success: 142 76% 36%;
+    --warning: 38 92% 50%;
+    --editor-bg: 0 0% 100%;
+
+    /* Gradients */
+    --gradient-red-orange: linear-gradient(to right, hsl(0 72% 51%), hsl(350 89% 60%), hsl(25 95% 53%));
+    --gradient-blue-cyan: linear-gradient(to right, hsl(217 91% 60%), hsl(188 94% 43%));
+    --gradient-purple-pink: linear-gradient(to right, hsl(262 83% 58%), hsl(330 81% 60%));
+    --gradient-green-emerald: linear-gradient(to right, hsl(142 76% 36%), hsl(160 84% 39%));
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(230 91% 65%));
+    --gradient-surface: linear-gradient(180deg, hsl(220 14% 99%), hsl(220 14% 97%));
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.1), 0 2px 4px -2px hsl(0 0% 0% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.1), 0 4px 6px -4px hsl(0 0% 0% / 0.1);
+    --shadow-glow: 0 0 20px hsl(217 91% 60% / 0.15);
+  }
+
+  .dark {
+    /* Background & Surface - Dark Theme */
+    --background: 0 0% 6%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
+
+    /* Primary Colors - Dark Theme */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary Colors - Dark Theme */
+    --secondary: 220 14% 14%;
+    --secondary-foreground: 0 0% 90%;
+
+    /* Accent Colors - Dark Theme */
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Muted Colors - Dark Theme */
+    --muted: 220 14% 14%;
+    --muted-foreground: 220 9% 55%;
+
+    /* Destructive */
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders & Inputs */
+    --border: 220 14% 16%;
+    --input: 220 14% 16%;
+    --ring: 217 91% 60%;
+
+    /* Sidebar Colors - Dark Theme */
+    --sidebar-background: 0 0% 7%;
+    --sidebar-foreground: 220 9% 55%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 12%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 220 14% 16%;
+    --sidebar-ring: 217 91% 60%;
+
+    /* Custom tokens */
+    --surface: 0 0% 8%;
+    --surface-elevated: 0 0% 10%;
+    --surface-hover: 220 14% 12%;
+    --text-primary: 0 0% 95%;
+    --text-secondary: 220 9% 65%;
+    --text-muted: 220 9% 45%;
+    --success: 142 70% 45%;
+    --warning: 38 92% 50%;
+    --editor-bg: 0 0% 9%;
+
+    /* Gradients - Dark Theme */
+    --gradient-red-orange: linear-gradient(to right, hsl(0 72% 55%), hsl(350 89% 65%), hsl(25 95% 58%));
+    --gradient-blue-cyan: linear-gradient(to right, hsl(217 91% 65%), hsl(188 94% 48%));
+    --gradient-purple-pink: linear-gradient(to right, hsl(262 83% 63%), hsl(330 81% 65%));
+    --gradient-green-emerald: linear-gradient(to right, hsl(142 70% 45%), hsl(160 84% 44%));
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 55%), hsl(230 91% 60%));
+    --gradient-surface: linear-gradient(180deg, hsl(0 0% 9%), hsl(0 0% 7%));
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.3);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.4), 0 2px 4px -2px hsl(0 0% 0% / 0.3);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.4), 0 4px 6px -4px hsl(0 0% 0% / 0.3);
+    --shadow-glow: 0 0 30px hsl(217 91% 60% / 0.2);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer components {
+  .sidebar-glass {
+    @apply bg-sidebar-background/80 backdrop-blur-xl border-r border-sidebar-border;
+  }
+
+  .card-elevated {
+    @apply bg-card rounded-xl shadow-md border border-border transition-all duration-200;
+  }
+
+  .card-elevated:hover {
+    @apply shadow-lg border-primary/20;
+  }
+
+  .theme-updating {
+    transition: box-shadow 0.5s ease, transform 0.35s ease;
+    box-shadow: var(--shadow-glow);
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-medium transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-lg px-4 py-2 font-medium transition-all duration-200;
+  }
+
+  /* Gradient Utilities */
+  .gradient-red-orange {
+    background: var(--gradient-red-orange);
+  }
+
+  .gradient-blue-cyan {
+    background: var(--gradient-blue-cyan);
+  }
+
+  .gradient-purple-pink {
+    background: var(--gradient-purple-pink);
+  }
+
+  .gradient-green-emerald {
+    background: var(--gradient-green-emerald);
+  }
+
+  /* Typography Utilities */
+  .text-heading-main {
+    @apply text-4xl sm:text-5xl lg:text-6xl font-extrabold;
+  }
+
+  .text-heading-section {
+    @apply text-3xl sm:text-4xl font-bold;
+  }
+
+  .text-heading-card {
+    @apply text-xl font-semibold;
+  }
+
+  .text-link {
+    @apply text-primary hover:underline;
+  }
+
+  .btn-ghost {
+    @apply hover:bg-muted text-muted-foreground hover:text-foreground rounded-lg px-4 py-2 font-medium transition-all duration-200;
+  }
+
+  .input-base {
+    @apply bg-background border border-input rounded-lg px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200;
+  }
+
+  .sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all duration-200 cursor-pointer;
+  }
+
+  .sidebar-item-active {
+    @apply bg-sidebar-accent text-sidebar-accent-foreground font-medium;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  .shadow-soft {
+    box-shadow: 0 2px 8px -2px hsl(0 0% 0% / 0.1), 0 4px 16px -4px hsl(0 0% 0% / 0.05);
+  }
+
+  .shadow-elevated {
+    box-shadow: 0 4px 12px -2px hsl(0 0% 0% / 0.12), 0 8px 24px -4px hsl(0 0% 0% / 0.08);
+  }
+
+  /* Editor Styles - Word-like */
+  .ProseMirror {
+    outline: none;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+
+  .ProseMirror p {
+    margin: 0.5em 0;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+    height: 0;
+  }
+
+  .ProseMirror h1,
+  .ProseMirror h2,
+  .ProseMirror h3,
+  .ProseMirror h4,
+  .ProseMirror h5,
+  .ProseMirror h6 {
+    font-weight: 600;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .ProseMirror h1 {
+    font-size: 2em;
+  }
+
+  .ProseMirror h2 {
+    font-size: 1.5em;
+  }
+
+  .ProseMirror h3 {
+    font-size: 1.17em;
+  }
+
+  .ProseMirror ul,
+  .ProseMirror ol {
+    padding-left: 1.5em;
+    margin: 0.5em 0;
+  }
+
+  .ProseMirror li {
+    margin: 0.25em 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .ProseMirror blockquote {
+    border-left: 4px solid hsl(var(--primary));
+    padding-left: 1em;
+    margin: 1em 0;
+    font-style: italic;
+    color: hsl(var(--muted-foreground));
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .ProseMirror code {
+    background-color: hsl(var(--muted));
+    padding: 0.2em 0.4em;
+    border-radius: 0.25em;
+    font-size: 0.9em;
+    font-family: 'Courier New', monospace;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .ProseMirror pre {
+    background-color: hsl(var(--muted));
+    padding: 1em;
+    border-radius: 0.5em;
+    overflow-x: auto;
+    margin: 1em 0;
+  }
+
+  .ProseMirror pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .ProseMirror img {
+    max-width: 100%;
+    height: auto;
+    margin: 1em 0;
+    border-radius: 0.25em;
+    display: block;
+  }
+
+  .ProseMirror a {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+    cursor: pointer;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .ProseMirror a:hover {
+    color: hsl(var(--primary) / 0.8);
+  }
+
+  .ProseMirror table {
+    border-collapse: collapse;
+    margin: 1em 0;
+    width: 100%;
+    border: 1px solid hsl(var(--border));
+    table-layout: fixed;
+  }
+
+  .ProseMirror table td,
+  .ProseMirror table th {
+    border: 1px solid hsl(var(--border));
+    padding: 0.5em;
+    min-width: 1em;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .ProseMirror table th {
+    background-color: hsl(var(--muted));
+    font-weight: 600;
+  }
+
+  .ProseMirror table .selectedCell {
+    background-color: hsl(var(--primary) / 0.1);
+  }
+
+  /* Table column resizer handle */
+  .pm-table-resizer {
+    background: transparent;
+    width: 10px !important;
+    cursor: col-resize !important;
+    transition: all 0.15s ease;
+    opacity: 0;
+  }
+
+  .pm-table-resizer:hover {
+    background: var(--primary);
+    opacity: 1;
+    box-shadow: inset 0 0 0 1px var(--primary);
+  }
+
+  /* Table drag handle (top-left) */
+  .pm-table-drag-handle {
+    cursor: grab;
+  }
+
+  .pm-table-drag-handle:hover {
+    opacity: 1 !important;
+    box-shadow: 0 0 8px var(--primary);
+  }
+
+  .pm-table-drag-handle:active {
+    cursor: grabbing;
+  }
+
+  /* Table resize handle (bottom-right) */
+  .pm-table-resize-handle {
+    cursor: nwse-resize;
+  }
+
+  .pm-table-resize-handle:hover {
+    opacity: 1 !important;
+    box-shadow: 0 0 8px var(--primary);
+  }
+
+  /* Make table cells position: relative so resizers can be absolutely positioned */
+  .ProseMirror table td,
+  .ProseMirror table th {
+    position: relative;
+  }
+
+  .ProseMirror mark {
+    background-color: hsl(var(--warning));
+    padding: 0.1em 0.2em;
+    border-radius: 0.2em;
+  }
+
+  .ProseMirror hr {
+    border: none;
+    border-top: 2px solid hsl(var(--border));
+    margin: 1.5em 0;
+  }
+
+  /* Page Break Styling */
+  .page-break {
+    width: 100%;
+    height: 0 !important;
+    border-top: 2px dashed hsl(var(--muted-foreground) / 0.4) !important;
+    margin: 20px 0 !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    cursor: default;
+    pointer-events: none;
+    position: relative;
+  }
+
+  /* Prevent content inside large blocks from being split across pages when possible */
+  .ProseMirror > * {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    -webkit-region-break-inside: avoid;
+  }
+
+  /* Avoid splitting images, tables and code blocks across pages */
+  .ProseMirror img,
+  .ProseMirror table,
+  .ProseMirror pre,
+  .ProseMirror code,
+  .ProseMirror blockquote {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .page-break::before {
+    content: 'PAGE BREAK';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 600;
+    color: hsl(var(--muted-foreground) / 0.6);
+    background: hsl(var(--background));
+    padding: 2px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* Ensure page breaks respect document structure */
+  .ProseMirror .page-break {
+    display: block;
+    width: 100%;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  /* Focus styles */
+  .ProseMirror:focus {
+    outline: none;
+  }
+
+  /* Selection styles */
+  .ProseMirror ::selection {
+    background-color: hsl(var(--primary) / 0.2);
+  }
+
+  /* Chat Message Styling */
+  .chat-message {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .chat-message-ai {
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  .chat-message-user {
+    box-shadow: 0 1px 3px hsl(0 0% 0% / 0.1);
+  }
+
+  /* Smooth transitions for buttons */
+  button, [role="button"] {
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Input focus effect */
+  input:focus {
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseSoft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes typingDot {
+  0%, 60%, 100% {
+    opacity: 0.4;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@layer utilities {
+  .animate-slide-in-right {
+    animation: slideInRight 0.3s ease-out;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.3s ease-out;
+  }
+
+  .typing-indicator {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+    animation: typingDot 1.4s infinite;
+  }
+
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  .shimmer-loading {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted) / 0.5) 25%,
+      hsl(var(--muted)) 50%,
+      hsl(var(--muted) / 0.5) 75%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+}
+
+/* Print improvements: try to make exported/printed pages look like the preview */
+@media print {
+  html, body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    background: #fff !important;
+  }
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+  /* Hide app chrome when printing */
+  .no-print, .sidebar-glass, .topbar, .header, .footer, nav, .ui-dialog__overlay {
+    display: none !important;
+  }
+  .ProseMirror {
+    max-width: none !important;
+    width: auto !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+  }
+  .ProseMirror hr {
+    border-top: 2px solid #d72828 !important;
+  }
+}

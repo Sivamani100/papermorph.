@@ -1,0 +1,1236 @@
+/* Syncfusion styles MUST be imported BEFORE Tailwind to prevent style conflicts */
+@import "../node_modules/@syncfusion/ej2/material.css";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Papermorph Design System */
+@layer base {
+  :root {
+    /* Light Theme Colors - Default Orange Accents */
+    --background: 30 20% 96%;
+    --foreground: 220 14% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 14% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 14% 15%;
+
+    /* Primary - Orange (Default) */
+    --primary: 15 90% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary */
+    --secondary: 30 15% 93%;
+    --secondary-foreground: 220 14% 15%;
+
+    --muted: 30 15% 90%;
+    --muted-foreground: 220 14% 45%;
+
+    --accent: 30 20% 92%;
+    --accent-foreground: 15 90% 45%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 30 15% 85%;
+    --input: 30 15% 85%;
+    --ring: 15 90% 55%;
+
+    --radius: 0.5rem;
+
+    /* Papermorph specific - Light Theme */
+    --header-bg: 0 0% 100%;
+    --sidebar-bg: 0 0% 100%;
+    --toolbar-bg: 0 0% 100%;
+    --canvas-bg: 30 10% 90%;
+    --panel-bg: 0 0% 100%;
+    --status-bg: 30 15% 95%;
+
+    /* Sidebar stays white in light theme */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 15 90% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 15 90% 55%;
+
+    /* Toolbar hover states */
+    --toolbar-hover: 15 90% 55%;
+    --toolbar-active: 15 95% 50%;
+  }
+
+  /* Blue Theme */
+  .theme-blue {
+    --primary: 212 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --accent-foreground: 212 100% 60%;
+    --ring: 212 100% 50%;
+    --sidebar-primary: 212 100% 50%;
+    --sidebar-ring: 212 100% 50%;
+    --toolbar-hover: 212 100% 50%;
+    --toolbar-active: 212 95% 45%;
+    --hover-bg: 212 100% 10%;
+    --hover-border: 212 100% 20%;
+  }
+
+  /* Green Theme */
+  .theme-green {
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 100%;
+    --accent-foreground: 142 76% 40%;
+    --ring: 142 76% 36%;
+    --sidebar-primary: 142 76% 36%;
+    --sidebar-ring: 142 76% 36%;
+    --toolbar-hover: 142 76% 36%;
+    --toolbar-active: 142 80% 32%;
+    --hover-bg: 142 76% 10%;
+    --hover-border: 142 76% 20%;
+  }
+
+  /* Red Theme */
+  .theme-red {
+    --primary: 0 72% 51%;
+    --primary-foreground: 0 0% 100%;
+    --accent-foreground: 0 72% 55%;
+    --ring: 0 72% 51%;
+    --sidebar-primary: 0 72% 51%;
+    --sidebar-ring: 0 72% 51%;
+    --toolbar-hover: 0 72% 51%;
+    --toolbar-active: 0 75% 47%;
+    --hover-bg: 0 72% 10%;
+    --hover-border: 0 72% 20%;
+  }
+
+  /* Orange Theme (Default) */
+  .theme-orange {
+    --primary: 15 90% 55%;
+    --primary-foreground: 0 0% 100%;
+    --accent-foreground: 15 90% 45%;
+    --ring: 15 90% 55%;
+    --sidebar-primary: 15 90% 55%;
+    --sidebar-ring: 15 90% 55%;
+    --toolbar-hover: 15 90% 55%;
+    --toolbar-active: 15 95% 50%;
+    --hover-bg: 15 90% 10%;
+    --hover-border: 15 90% 20%;
+  }
+
+  .dark {
+    /* Dark Theme Colors - Orange Accents by Default */
+    --background: 220 20% 10%;
+    --foreground: 0 0% 95%;
+
+    --card: 220 20% 13%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 220 20% 13%;
+    --popover-foreground: 0 0% 95%;
+
+    /* Primary - Orange (Default in Dark) */
+    --primary: 15 90% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary */
+    --secondary: 220 20% 18%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 220 20% 20%;
+    --muted-foreground: 220 14% 55%;
+
+    --accent: 220 20% 22%;
+    --accent-foreground: 15 90% 45%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 20% 22%;
+    --input: 220 20% 22%;
+    --ring: 15 90% 55%;
+
+    /* Papermorph specific - Dark Theme */
+    --header-bg: 0 0% 0%;
+    --sidebar-bg: 0 0% 0%;
+    --toolbar-bg: 0 0% 0%;
+    --canvas-bg: 220 18% 22%;
+    --panel-bg: 0 0% 0%;
+    --status-bg: 0 0% 0%;
+
+    --sidebar-background: 0 0% 0%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 15 90% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 15 90% 55%;
+
+    /* Toolbar hover states */
+    --toolbar-hover: 15 90% 55%;
+    --toolbar-active: 15 95% 50%;
+  }
+
+  /* Dark Theme - Blue */
+  .dark.theme-blue {
+    --primary: 212 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --accent-foreground: 212 100% 60%;
+    --ring: 212 100% 50%;
+    --sidebar-primary: 212 100% 50%;
+    --sidebar-ring: 212 100% 50%;
+    --toolbar-hover: 212 100% 50%;
+    --toolbar-active: 212 95% 45%;
+    --hover-bg: 212 100% 10%;
+    --hover-border: 212 100% 20%;
+  }
+
+  /* Dark Theme - Green */
+  .dark.theme-green {
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 100%;
+    --accent-foreground: 142 76% 40%;
+    --ring: 142 76% 36%;
+    --sidebar-primary: 142 76% 36%;
+    --sidebar-ring: 142 76% 36%;
+    --toolbar-hover: 142 76% 36%;
+    --toolbar-active: 142 80% 32%;
+    --hover-bg: 142 76% 10%;
+    --hover-border: 142 76% 20%;
+  }
+
+  /* Dark Theme - Red */
+  .dark.theme-red {
+    --primary: 0 72% 51%;
+    --primary-foreground: 0 0% 100%;
+    --accent-foreground: 0 72% 55%;
+    --ring: 0 72% 51%;
+    --sidebar-primary: 0 72% 51%;
+    --sidebar-ring: 0 72% 51%;
+    --toolbar-hover: 0 72% 51%;
+    --toolbar-active: 0 75% 47%;
+    --hover-bg: 0 72% 10%;
+    --hover-border: 0 72% 20%;
+  }
+
+  /* Dark Theme - Orange */
+  .dark.theme-orange {
+    --primary: 15 90% 55%;
+    --primary-foreground: 0 0% 100%;
+    --accent-foreground: 15 90% 45%;
+    --ring: 15 90% 55%;
+    --sidebar-primary: 15 90% 55%;
+    --sidebar-ring: 15 90% 55%;
+    --toolbar-hover: 15 90% 55%;
+    --toolbar-active: 15 95% 50%;
+    --hover-bg: 15 90% 10%;
+    --hover-border: 15 90% 20%;
+  }
+}
+
+@layer utilities {
+  .hover-primary {
+    transition: all 0.2s ease;
+  }
+  .hover-primary:hover {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+  
+  .hover-primary-light {
+    transition: all 0.2s ease;
+  }
+  .hover-primary-light:hover {
+    background-color: hsl(var(--hover-bg, var(--primary) / 0.1));
+    border-color: hsl(var(--hover-border, var(--primary) / 0.2));
+  }
+  
+  .hover-accent {
+    transition: all 0.2s ease;
+  }
+  .hover-accent:hover {
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+  }
+  
+  .text-primary {
+    color: hsl(var(--primary));
+  }
+  
+  .border-primary {
+    border-color: hsl(var(--primary));
+  }
+  
+  .bg-primary {
+    background-color: hsl(var(--primary));
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+}
+
+@layer components {
+  /* ============================================
+     PAPERMORPH EDITOR LAYOUT
+     ============================================ */
+  
+  .papermorph-editor {
+    @apply flex flex-col h-screen overflow-hidden;
+    background: hsl(var(--background));
+  }
+
+  .papermorph-editor.dark {
+    background: hsl(220 14% 8%);
+  }
+
+  /* ============================================
+     HEADER
+     ============================================ */
+  
+  .header-bar {
+    @apply flex items-center justify-between px-4 h-12;
+    background: hsl(var(--header-bg));
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .dark .header-bar {
+    background: hsl(220 14% 10%);
+    border-bottom-color: hsl(220 14% 18%);
+  }
+
+  .header-left {
+    @apply flex items-center gap-6;
+  }
+
+  .header-right {
+    @apply flex items-center gap-2;
+  }
+
+  .header-logo {
+    @apply flex items-center gap-2;
+  }
+
+  .logo-icon {
+    @apply w-8 h-8 flex items-center justify-center rounded-lg;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .logo-text {
+    @apply text-base font-semibold;
+    color: hsl(var(--foreground));
+  }
+
+  .header-document {
+    @apply flex items-center gap-3;
+  }
+
+  .document-title {
+    @apply text-sm font-medium cursor-pointer px-2 py-1 rounded;
+    color: hsl(var(--foreground));
+  }
+
+  .document-title:hover {
+    background: hsl(var(--secondary));
+  }
+
+  .document-title-input {
+    @apply text-sm font-medium bg-transparent border border-primary outline-none px-2 py-1 rounded;
+    color: hsl(var(--foreground));
+  }
+
+  .save-status {
+    @apply flex items-center gap-1 text-xs;
+    color: hsl(142 76% 46%);
+  }
+
+  .save-status-icon {
+    color: hsl(142 76% 46%);
+  }
+
+  .header-btn {
+    @apply flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md transition-colors;
+    background: transparent;
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+  }
+
+  .header-btn:hover {
+    background: hsl(var(--secondary));
+  }
+
+  .dark .header-btn {
+    border-color: hsl(220 14% 25%);
+  }
+
+  .header-btn-features {
+    background: linear-gradient(135deg, hsl(280 80% 55%), hsl(320 80% 55%));
+    color: white;
+    border: none;
+  }
+
+  .header-btn-features:hover {
+    opacity: 0.9;
+  }
+
+  .header-icon-btn {
+    @apply flex items-center justify-center w-8 h-8 rounded-md transition-colors;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .header-icon-btn:hover {
+    background: hsl(var(--secondary));
+    color: hsl(var(--foreground));
+  }
+
+  .header-guest-btn {
+    @apply flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md transition-colors;
+    background: hsl(var(--secondary));
+    color: hsl(var(--foreground));
+  }
+
+  .header-guest-btn:hover {
+    background: hsl(var(--muted));
+  }
+
+  /* ============================================
+     MAIN TOOLBAR
+     ============================================ */
+  
+  .main-toolbar {
+    @apply flex flex-col gap-1 px-4 py-2;
+    background: hsl(var(--toolbar-bg));
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .dark .main-toolbar {
+    background: hsl(220 14% 13%);
+    border-bottom-color: hsl(220 14% 18%);
+  }
+
+  .toolbar-row {
+    @apply flex items-center gap-1 flex-wrap;
+  }
+
+  .toolbar-group {
+    @apply flex items-center gap-0.5;
+  }
+
+  .toolbar-separator {
+    @apply w-px h-6 mx-2;
+    background: hsl(var(--border));
+  }
+
+  .dark .toolbar-separator {
+    background: hsl(220 14% 25%);
+  }
+
+  .toolbar-btn {
+    @apply flex items-center justify-center w-8 h-8 rounded transition-colors;
+    color: hsl(var(--foreground));
+    background: transparent;
+  }
+
+  .toolbar-btn:hover {
+    background: hsl(var(--accent));
+  }
+
+  .toolbar-btn.active {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .toolbar-btn-text {
+    @apply text-sm font-medium;
+  }
+
+  .toolbar-select-btn {
+    @apply flex items-center gap-1 px-2 h-8 rounded text-sm;
+    background: hsl(var(--secondary));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+  }
+
+  .dark .toolbar-select-btn {
+    background: hsl(220 14% 18%);
+    border-color: hsl(220 14% 25%);
+  }
+
+  .toolbar-select-btn:hover {
+    background: hsl(var(--accent));
+  }
+
+  .toolbar-select-sm {
+    @apply w-16;
+  }
+
+  .toolbar-icon-box {
+    @apply w-4 h-4 border rounded;
+    border-color: hsl(var(--muted-foreground));
+  }
+
+  .toolbar-text-icon {
+    @apply text-base font-bold;
+  }
+
+  /* ============================================
+     MAIN CONTENT AREA
+     ============================================ */
+  
+  .editor-main {
+    @apply flex flex-1 overflow-hidden;
+  }
+
+  /* ============================================
+     TEMPLATES SIDEBAR
+     ============================================ */
+  
+  .templates-sidebar {
+    @apply flex flex-col w-72 overflow-hidden;
+    background: hsl(var(--sidebar-bg));
+    border-right: 1px solid hsl(var(--sidebar-border));
+  }
+
+  .dark .templates-sidebar {
+    background: hsl(220 20% 10%);
+    border-right-color: hsl(220 20% 18%);
+  }
+
+  /* Light theme sidebar */
+  :not(.dark) .templates-sidebar {
+    background: hsl(var(--sidebar-background));
+    border-right-color: hsl(var(--sidebar-border));
+  }
+
+  .templates-sidebar-collapsed {
+    @apply w-12 items-center;
+  }
+
+  .sidebar-header {
+    @apply flex items-center justify-between px-4 py-3;
+  }
+
+  .sidebar-title {
+    @apply text-sm font-semibold;
+    color: hsl(var(--sidebar-foreground));
+  }
+
+  .sidebar-toggle-btn {
+    @apply flex items-center justify-center w-6 h-6 rounded transition-colors;
+    color: hsl(var(--sidebar-foreground));
+  }
+
+  .sidebar-toggle-btn:hover {
+    background: hsl(var(--sidebar-accent));
+  }
+
+  .quick-actions {
+    @apply flex items-center gap-1 px-4 py-2 flex-wrap;
+    border-bottom: 1px solid hsl(var(--sidebar-border));
+  }
+
+  .quick-action-btn {
+    @apply flex items-center justify-center w-8 h-8 rounded transition-colors;
+    color: hsl(var(--sidebar-foreground));
+    background: hsl(var(--sidebar-accent));
+  }
+
+  .quick-action-btn:hover {
+    background: hsl(220 14% 25%);
+  }
+
+  .sidebar-search {
+    @apply flex items-center gap-2 mx-4 my-3 px-3 py-2 rounded-lg;
+    background: hsl(var(--sidebar-accent));
+  }
+
+  .search-icon {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .search-input {
+    @apply flex-1 bg-transparent text-sm outline-none;
+    color: hsl(var(--sidebar-foreground));
+  }
+
+  .search-input::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .upload-template-btn {
+    @apply flex items-center gap-2 mx-4 mb-4 px-3 py-2 rounded-lg text-sm font-medium transition-colors;
+    background: transparent;
+    color: hsl(var(--sidebar-foreground));
+    border: 1px dashed hsl(var(--sidebar-border));
+  }
+
+  .upload-template-btn:hover {
+    background: hsl(var(--sidebar-accent));
+  }
+
+  .templates-list {
+    @apply flex-1 overflow-y-auto px-4;
+  }
+
+  .template-category {
+    @apply mb-4;
+  }
+
+  .category-title {
+    @apply text-xs font-semibold mb-2 tracking-wider;
+    color: hsl(var(--primary));
+  }
+
+  .category-templates {
+    @apply flex flex-col gap-3;
+  }
+
+  .template-card {
+    @apply relative rounded-lg overflow-hidden cursor-pointer transition-all;
+    background: hsl(var(--sidebar-accent));
+    border: 1px solid transparent;
+  }
+
+  .template-card:hover {
+    border-color: hsl(var(--primary));
+    transform: translateY(-2px);
+  }
+
+  .template-favorite {
+    @apply absolute top-2 right-2 p-1 rounded transition-colors;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .template-favorite:hover {
+    color: hsl(45 100% 50%);
+  }
+
+  .template-preview {
+    @apply flex flex-col items-center justify-center py-8;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .template-preview span {
+    @apply text-xs mt-2;
+  }
+
+  .template-info {
+    @apply p-3;
+  }
+
+  .template-category-badge {
+    @apply text-xs font-semibold;
+    color: hsl(var(--primary));
+  }
+
+  .template-title {
+    @apply text-sm font-medium mt-1;
+    color: hsl(var(--sidebar-foreground));
+  }
+
+  .template-description {
+    @apply text-xs mt-1 line-clamp-2;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ============================================
+     EDITOR CENTER AREA
+     ============================================ */
+  
+  .editor-center {
+    @apply flex flex-col flex-1 overflow-hidden;
+    background: hsl(var(--canvas-bg));
+  }
+
+  .dark .editor-center {
+    background: hsl(220 20% 22%);
+  }
+
+  :not(.dark) .editor-center {
+    background: hsl(30 10% 88%);
+  }
+
+  /* ============================================
+     CANVAS CONTROLS
+     ============================================ */
+  
+  .canvas-controls {
+    @apply flex items-center justify-between px-4 py-2;
+    background: hsl(var(--panel-bg));
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .dark .canvas-controls {
+    background: hsl(220 20% 14%);
+    border-bottom-color: hsl(220 20% 20%);
+  }
+
+  :not(.dark) .canvas-controls {
+    background: hsl(0 0% 100%);
+    border-bottom-color: hsl(30 15% 85%);
+  }
+
+  .canvas-controls-left {
+    @apply flex items-center gap-3;
+  }
+
+  .canvas-controls-right {
+    @apply flex items-center gap-2;
+  }
+
+  .canvas-zoom-btn {
+    @apply flex items-center justify-center w-7 h-7 rounded transition-colors;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .canvas-zoom-btn:hover {
+    background: hsl(var(--accent));
+    color: hsl(var(--foreground));
+  }
+
+  .canvas-zoom-value {
+    @apply text-sm font-medium;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .canvas-control-btn {
+    @apply flex items-center justify-center w-7 h-7 rounded transition-colors;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .canvas-control-btn:hover {
+    background: hsl(var(--accent));
+    color: hsl(var(--foreground));
+  }
+
+  .canvas-view-toggles {
+    @apply flex items-center gap-1 ml-4;
+  }
+
+  .canvas-toggle-btn {
+    @apply flex items-center justify-center w-7 h-7 rounded text-sm font-semibold transition-colors;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .canvas-toggle-btn:hover,
+  .canvas-toggle-btn.active {
+    background: hsl(var(--accent));
+    color: hsl(var(--foreground));
+  }
+
+  .canvas-mode-btn {
+    @apply flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold ml-2;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .canvas-option-btn {
+    @apply px-3 py-1 text-sm rounded transition-colors;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .canvas-option-btn:hover {
+    background: hsl(var(--accent));
+    color: hsl(var(--foreground));
+  }
+
+  .canvas-option-btn.inactive {
+    opacity: 0.5;
+  }
+
+  .canvas-snap-btn {
+    @apply px-3 py-1 text-sm font-medium rounded transition-colors;
+    background: transparent;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .canvas-snap-btn.active {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .canvas-size-btn {
+    @apply flex items-center gap-1 px-2 py-1 text-sm rounded;
+    background: hsl(var(--secondary));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+  }
+
+  .dark .canvas-size-btn {
+    background: hsl(220 14% 18%);
+    border-color: hsl(220 14% 25%);
+  }
+
+  .canvas-help-btn {
+    @apply flex items-center justify-center w-6 h-6 rounded-full;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .canvas-coords {
+    @apply text-xs ml-auto;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ============================================
+     EDITOR CANVAS
+     ============================================ */
+  
+  .editor-canvas-wrapper {
+    @apply flex-1 overflow-auto p-8 flex justify-center;
+  }
+
+  .editor-canvas {
+    @apply relative w-full max-w-4xl bg-white rounded-sm shadow-lg;
+    min-height: 800px;
+    max-height: fit-content;
+  }
+
+  .dark .editor-canvas {
+    background: hsl(0 0% 100%);
+  }
+
+  .editor-placeholder {
+    @apply absolute top-12 left-12 text-lg pointer-events-none;
+    color: hsl(220 14% 60%);
+    font-style: italic;
+  }
+
+  /* ============================================
+     AI ASSISTANT PANEL
+     ============================================ */
+  
+  .ai-assistant {
+    @apply flex flex-col w-80;
+    background: hsl(var(--panel-bg));
+    border-left: 1px solid hsl(var(--border));
+  }
+
+  .dark .ai-assistant {
+    background: hsl(220 20% 12%);
+    border-left-color: hsl(220 20% 18%);
+  }
+
+  :not(.dark) .ai-assistant {
+    background: hsl(220 20% 12%);
+    border-left-color: hsl(220 20% 18%);
+  }
+
+  .ai-header {
+    @apply flex items-center justify-between px-4 py-3;
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .dark .ai-header {
+    border-bottom-color: hsl(220 14% 18%);
+  }
+
+  .ai-header-title {
+    @apply flex items-center gap-2;
+  }
+
+  .ai-avatar {
+    @apply flex items-center justify-center w-8 h-8 rounded-full;
+    background: linear-gradient(135deg, hsl(280 80% 55%), hsl(320 80% 55%));
+    color: white;
+  }
+
+  .ai-title-text {
+    @apply flex flex-col;
+  }
+
+  .ai-name {
+    @apply text-sm font-semibold;
+    color: hsl(var(--foreground));
+  }
+
+  .ai-subtitle {
+    @apply text-xs;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .ai-header-actions {
+    @apply flex items-center gap-1;
+  }
+
+  .ai-icon-btn {
+    @apply flex items-center justify-center w-7 h-7 rounded transition-colors;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .ai-icon-btn:hover {
+    background: hsl(var(--accent));
+    color: hsl(var(--foreground));
+  }
+
+  .ai-tabs {
+    @apply flex items-center gap-2 px-4 py-2;
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .dark .ai-tabs {
+    border-bottom-color: hsl(220 14% 18%);
+  }
+
+  .ai-tab {
+    @apply flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md transition-colors;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .ai-tab:hover {
+    background: hsl(var(--accent));
+    color: hsl(var(--foreground));
+  }
+
+  .ai-tab.active {
+    background: hsl(var(--accent));
+    color: hsl(var(--foreground));
+  }
+
+  .ai-messages {
+    @apply flex-1 overflow-y-auto p-4 space-y-3;
+  }
+
+  .ai-message {
+    @apply text-sm leading-relaxed;
+    color: hsl(var(--foreground));
+  }
+
+  .ai-message.assistant {
+    @apply pr-2;
+  }
+
+  .ai-message.user {
+    @apply bg-primary/10 p-3 rounded-lg;
+  }
+
+  .ai-apply-btn {
+    @apply flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded ml-auto mt-2;
+    background: hsl(var(--secondary));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+  }
+
+  .dark .ai-apply-btn {
+    background: hsl(220 14% 18%);
+    border-color: hsl(220 14% 25%);
+  }
+
+  .ai-apply-btn:hover {
+    background: hsl(var(--accent));
+  }
+
+  .ai-footer-actions {
+    @apply flex items-center justify-center gap-6 px-4 py-3;
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .dark .ai-footer-actions {
+    border-top-color: hsl(220 14% 18%);
+  }
+
+  .ai-action-btn {
+    @apply flex items-center gap-1.5 text-sm;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .ai-action-btn:hover {
+    color: hsl(var(--foreground));
+  }
+
+  .ai-input-container {
+    @apply flex items-center gap-2 px-3 py-3;
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .dark .ai-input-container {
+    border-top-color: hsl(220 14% 18%);
+  }
+
+  .ai-input-add {
+    @apply flex items-center justify-center w-8 h-8 rounded-full transition-colors;
+    color: hsl(var(--muted-foreground));
+    background: hsl(var(--accent));
+  }
+
+  .ai-input-add:hover {
+    background: hsl(var(--secondary));
+  }
+
+  .ai-input {
+    @apply flex-1 bg-transparent text-sm outline-none;
+    color: hsl(var(--foreground));
+  }
+
+  .ai-input::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .ai-send-btn {
+    @apply flex items-center justify-center w-8 h-8 rounded-full;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .ai-send-btn:hover {
+    opacity: 0.9;
+  }
+
+  /* ============================================
+     STATUS BAR
+     ============================================ */
+  
+  .status-bar {
+    @apply flex items-center justify-between px-4 h-8 text-xs;
+    background: hsl(var(--status-bg));
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .dark .status-bar {
+    background: hsl(220 20% 10%);
+    border-top-color: hsl(220 20% 18%);
+  }
+
+  :not(.dark) .status-bar {
+    background: hsl(30 15% 95%);
+    border-top-color: hsl(30 15% 85%);
+  }
+
+  .status-bar-left,
+  .status-bar-center,
+  .status-bar-right {
+    @apply flex items-center gap-3;
+  }
+
+  .status-document-name,
+  .status-page,
+  .status-saved,
+  .status-words,
+  .status-chars {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .status-divider {
+    color: hsl(var(--border));
+  }
+
+  /* ============================================
+     DROPDOWN MENU OVERRIDES
+     ============================================ */
+  
+  .dropdown-menu-content {
+    @apply z-50 min-w-32 rounded-md border p-1 shadow-lg;
+    background: hsl(var(--popover));
+    border-color: hsl(var(--border));
+  }
+
+  .dark .dropdown-menu-content {
+    background: hsl(220 20% 16%);
+    border-color: hsl(220 20% 24%);
+  }
+
+  .font-size-dropdown {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  /* ============================================
+     SYNCFUSION OVERRIDES
+     ============================================ */
+  
+  #documentEditor {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .e-documenteditorcontainer {
+    border: none !important;
+    width: 100% !important;
+    background: transparent !important;
+  }
+
+  .e-de-ctn {
+    border: none !important;
+    background: transparent !important;
+  }
+
+  /* Hide Syncfusion toolbar since we use custom */
+  .e-de-ctn .e-de-toolbar,
+  .e-de-ctn .e-de-tlbr-wrapper,
+  .e-documenteditorcontainer .e-toolbar {
+    display: none !important;
+  }
+
+  /* Hide properties pane */
+  .e-de-ctn-properties-pane,
+  .e-de-tool-ctn-properties-pane {
+    display: none !important;
+  }
+
+  /* Hide status bar - more aggressive selectors */
+  .e-de-ctn .e-de-status-bar,
+  .e-documenteditorcontainer .e-de-status-bar,
+  .e-de-status-bar,
+  .e-documenteditor-statusbar,
+  .e-de-ctn > .e-de-status-bar,
+  div[class*="status-bar"]:not(.status-bar) {
+    display: none !important;
+    height: 0 !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
+  }
+
+  /* Hide license banner */
+  .e-de-ctn .e-dlg-overlay,
+  div[style*="position: fixed"][style*="z-index: 999999"],
+  .e-license-banner,
+  .e-control .e-license,
+  #js-licensing,
+  div.e-license,
+  [class*="license"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    opacity: 0 !important;
+  }
+
+  /* Document canvas styling */
+  .e-de-ctn .e-de-viewer-container {
+    background: transparent !important;
+  }
+
+  .e-de-ctn .e-documenteditor {
+    background: transparent !important;
+  }
+
+  /* Ensure LTR text direction */
+  .e-de-ctn .e-de-viewer-container,
+  .e-de-ctn .e-documenteditor,
+  .e-de-ctn .e-de-content-editor,
+  .e-de-ctn .e-de-editor-content {
+    direction: ltr !important;
+    text-align: left !important;
+  }
+
+  .editor-placeholder {
+    direction: ltr !important;
+    text-align: left !important;
+  }
+
+  /* ============================================
+     CUSTOM SCROLLBAR STYLES
+     ============================================ */
+
+  /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /* Custom scrollbar for Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+  }
+
+  /* Dark theme scrollbar */
+  .dark ::-webkit-scrollbar-thumb {
+    background: hsl(220 14% 35% / 0.5);
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: hsl(220 14% 45% / 0.7);
+    background-clip: content-box;
+  }
+
+  .dark * {
+    scrollbar-color: hsl(220 14% 35% / 0.5) transparent;
+  }
+
+  /* Light theme scrollbar */
+  :not(.dark) ::-webkit-scrollbar-thumb {
+    background: hsl(220 14% 50% / 0.3);
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  :not(.dark) ::-webkit-scrollbar-thumb:hover {
+    background: hsl(220 14% 50% / 0.5);
+    background-clip: content-box;
+  }
+
+  :not(.dark) * {
+    scrollbar-color: hsl(220 14% 50% / 0.3) transparent;
+  }
+
+  /* Editor specific scrollbar */
+  #documentEditor::-webkit-scrollbar,
+  .e-de-ctn::-webkit-scrollbar,
+  .e-documenteditor::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  #documentEditor::-webkit-scrollbar-thumb,
+  .e-de-ctn::-webkit-scrollbar-thumb,
+  .e-documenteditor::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.3);
+    border-radius: 3px;
+    border: 1px solid transparent;
+    background-clip: content-box;
+  }
+
+  #documentEditor::-webkit-scrollbar-thumb:hover,
+  .e-de-ctn::-webkit-scrollbar-thumb:hover,
+  .e-documenteditor::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
+    background-clip: content-box;
+  }
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    display: -moz-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -moz-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    overflow: hidden;
+  }
+}
