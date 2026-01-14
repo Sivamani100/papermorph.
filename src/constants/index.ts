@@ -82,11 +82,15 @@ export const ONLYOFFICE_CONFIG = {
  * Sidebar tab definitions
  */
 export const LEFT_SIDEBAR_TABS = [
+  { id: 'quick', label: 'Quick Actions', icon: 'Zap' },
   { id: 'templates', label: 'Templates', icon: 'FileText' },
   { id: 'tools', label: 'Tools', icon: 'PenTool' },
   { id: 'styles', label: 'Styles & Themes', icon: 'Palette' },
   { id: 'images', label: 'Images & Diagrams', icon: 'Image' },
   { id: 'citations', label: 'Citations', icon: 'Bookmark' },
+  { id: 'history', label: 'History', icon: 'Clock' },
+  { id: 'analytics', label: 'Analytics', icon: 'BarChart3' },
+  { id: 'collaborate', label: 'Collaborate', icon: 'Users' },
   { id: 'advanced', label: 'Advanced', icon: 'Wand2' },
   { id: 'documents', label: 'My Documents', icon: 'FolderOpen' },
 ] as const;

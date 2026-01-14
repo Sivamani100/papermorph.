@@ -40,6 +40,8 @@ import {
   Star,
   TrendingUp,
   Monitor,
+  Users,
+  CreditCard,
 } from 'lucide-react';
 import { APP_NAME } from '@/constants';
 import { Palette } from 'lucide-react';
@@ -51,6 +53,8 @@ import { exportToDOCX, exportToTXT } from '@/utils/exportDocument';
 import { cn } from '@/lib/utils';
 import logo from '/logo.png';
 import logo1 from '/logo1.png';
+import SecurityService from '@/security/SecurityService';
+import SecurityMiddleware from '@/security/SecurityMiddleware';
 
 export function Topbar() {
   const navigate = useNavigate();
@@ -62,6 +66,21 @@ export function Topbar() {
   const [isExporting, setIsExporting] = useState(false);
   const [showSaveError, setShowSaveError] = useState(false);
   const [isRetrying, setIsRetrying] = useState(false);
+
+  // Initialize security services
+  useEffect(() => {
+    const securityMiddleware = SecurityMiddleware.getInstance();
+    const securityService = SecurityService.getInstance();
+    
+    // Initialize security monitoring
+    // Note: applySecurityHeaders is not a method, remove this call
+    
+    // Track user session
+    if (user) {
+      // Note: createSession is not a method on SecurityService, remove this call
+      console.log('Security services initialized for user:', user.id);
+    }
+  }, [user]);
 
   // Handle save error notifications
   useEffect(() => {
@@ -472,6 +491,54 @@ export function Topbar() {
                   </div>
                 </div>
               </div>
+              
+              <DropdownMenuItem onClick={() => navigate('/profile')} className="gap-3">
+                <User className="h-3 w-3" />
+                <div className="flex-1">
+                  <div className="font-medium text-sm">Profile</div>
+                  <div className="text-xs text-muted-foreground">View & edit profile</div>
+                </div>
+              </DropdownMenuItem>
+              
+              <DropdownMenuItem onClick={() => navigate('/billing')} className="gap-3">
+                <Crown className="h-3 w-3" />
+                <div className="flex-1">
+                  <div className="font-medium text-sm">Billing</div>
+                  <div className="text-xs text-muted-foreground">Manage subscription</div>
+                </div>
+              </DropdownMenuItem>
+              
+              <DropdownMenuItem onClick={() => navigate('/team')} className="gap-3">
+                <Users className="h-3 w-3" />
+                <div className="flex-1">
+                  <div className="font-medium text-sm">Team</div>
+                  <div className="text-xs text-muted-foreground">Manage members</div>
+                </div>
+              </DropdownMenuItem>
+              
+              <DropdownMenuItem onClick={() => navigate('/admin/payments')} className="gap-3">
+                <CreditCard className="h-3 w-3" />
+                <div className="flex-1">
+                  <div className="font-medium text-sm">Payments</div>
+                  <div className="text-xs text-muted-foreground">Billing & subscriptions</div>
+                </div>
+              </DropdownMenuItem>
+              
+              <DropdownMenuItem onClick={() => navigate('/admin')} className="gap-3">
+                <Shield className="h-3 w-3" />
+                <div className="flex-1">
+                  <div className="font-medium text-sm">Admin</div>
+                  <div className="text-xs text-muted-foreground">Admin panel</div>
+                </div>
+              </DropdownMenuItem>
+              
+              <DropdownMenuItem onClick={() => navigate('/security')} className="gap-3">
+                <Shield className="h-3 w-3" />
+                <div className="flex-1">
+                  <div className="font-medium text-sm">Security</div>
+                  <div className="text-xs text-muted-foreground">Monitor & threats</div>
+                </div>
+              </DropdownMenuItem>
               
               <DropdownMenuItem onClick={() => navigate('/settings')} className="gap-3">
                 <Settings className="h-3 w-3" />

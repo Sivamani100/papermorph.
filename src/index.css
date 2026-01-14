@@ -2,6 +2,56 @@
 @import "../node_modules/@syncfusion/ej2/material.css";
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Barcode+39+Text&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
+
+/* Horizontal scrollbar hide utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+/* Smooth scrolling behavior */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
 
 @tailwind base;
 @tailwind components;
@@ -1219,6 +1269,82 @@
   .e-documenteditor::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--primary) / 0.5);
     background-clip: content-box;
+  }
+
+  /* Syncfusion Document Editor Theme Styles */
+  .dark #documentEditor .e-de-cnt-pg,
+  .dark #documentEditor .e-de-cnt-pg-content,
+  .dark #documentEditor .e-de-document {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+  }
+
+  .dark #documentEditor .e-de-document-text,
+  .dark #documentEditor .e-de-paragraph-text {
+    color: #ffffff !important;
+  }
+
+  .dark #documentEditor .e-de-cnt-pg-page {
+    background-color: #1a1a1a !important;
+    border-color: #333333 !important;
+  }
+
+  .dark #documentEditor .e-de-ruler,
+  .dark #documentEditor .e-de-ruler-header {
+    background-color: #2a2a2a !important;
+    border-color: #444444 !important;
+    color: #ffffff !important;
+  }
+
+  .dark #documentEditor .e-de-tbr,
+  .dark #documentEditor .e-de-toolbar {
+    background-color: #2a2a2a !important;
+    border-color: #444444 !important;
+  }
+
+  .dark #documentEditor .e-de-status-bar {
+    background-color: #2a2a2a !important;
+    border-color: #444444 !important;
+    color: #ffffff !important;
+  }
+
+  .dark #documentEditor .e-de-pane,
+  .dark #documentEditor .e-de-properties-pane {
+    background-color: #2a2a2a !important;
+    border-color: #444444 !important;
+    color: #ffffff !important;
+  }
+
+  .dark #documentEditor .e-de-selection-cursor {
+    border-color: #ffffff !important;
+  }
+
+  .dark #documentEditor .e-de-tbr-btn,
+  .dark #documentEditor .e-de-tbr-btn:hover {
+    background-color: #333333 !important;
+    color: #ffffff !important;
+  }
+
+  .dark #documentEditor .e-de-tbr-btn:active {
+    background-color: #444444 !important;
+  }
+
+  /* Light theme styles for consistency */
+  .light #documentEditor .e-de-cnt-pg,
+  .light #documentEditor .e-de-cnt-pg-content,
+  .light #documentEditor .e-de-document {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .light #documentEditor .e-de-document-text,
+  .light #documentEditor .e-de-paragraph-text {
+    color: #000000 !important;
+  }
+
+  .light #documentEditor .e-de-cnt-pg-page {
+    background-color: #ffffff !important;
+    border-color: #e0e0e0 !important;
   }
 }
 

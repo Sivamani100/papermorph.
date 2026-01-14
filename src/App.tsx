@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./components/ui/LandingPage";
 import Index from "./pages/Index";
+import EditorRedirect from "./components/EditorRedirect";
 import NotFound from "./pages/NotFound";
 import ThemeInitializer from "@/components/ThemeInitializer";
 import Notifications from "./pages/Notifications";
@@ -25,8 +26,9 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<EditorRedirect />} />
           <Route path="/app" element={<Index />} />
+          <Route path="/landing" element={<LandingPage />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/ai/all-tools" element={<AllAITools />} />
           <Route path="/ai/writing-assistant" element={<WritingAssistant />} />

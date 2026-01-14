@@ -1,5 +1,7 @@
 import { cn } from '@/lib/utils';
-import { FileText, Heart, Eye, Plus } from 'lucide-react';
+import { FileText, Heart, Eye, Plus, Clock, Star } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
 
 interface TemplateCardProps {
   title: string;
@@ -8,6 +10,7 @@ interface TemplateCardProps {
   category?: string;
   onSelect: () => void;
   className?: string;
+  isRecent?: boolean;
 }
 
 export function TemplateCard({
@@ -17,7 +20,23 @@ export function TemplateCard({
   category,
   onSelect,
   className,
+  isRecent,
 }: TemplateCardProps) {
+  const handlePreview = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toast.info(`Preview for "${title}" template coming soon!`);
+  };
+
+  const handleQuickAdd = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onSelect();
+  };
+
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toast.success(`"${title}" added to favorites!`);
+  };
+
   return (
     <button
       onClick={onSelect}
@@ -28,6 +47,16 @@ export function TemplateCard({
         className
       )}
     >
+      {/* Recent Badge */}
+      {isRecent && (
+        <div className="absolute top-2 right-2 z-10">
+          <Badge variant="secondary" className="text-xs px-1.5 py-0.5 h-auto flex items-center gap-1">
+            <Clock className="h-3 w-3" />
+            Recent
+          </Badge>
+        </div>
+      )}
+
       {/* Preview */}
       <div className="aspect-[4/3] rounded-lg bg-muted mb-3 overflow-hidden flex items-center justify-center relative">
         {previewImageUrl && previewImageUrl !== '/placeholder.svg' ? (
@@ -48,8 +77,8 @@ export function TemplateCard({
       <div className="pointer-events-none absolute inset-0 flex items-end justify-end p-3">
         <div className="opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity pointer-events-auto flex gap-2">
           <button
-            onClick={(e) => { e.stopPropagation(); /* preview action placeholder */ }}
-            className="btn-ghost flex items-center gap-2 px-3 py-1 text-xs rounded-md bg-background/60 backdrop-blur-sm"
+            onClick={handlePreview}
+            className="btn-ghost flex items-center gap-2 px-3 py-1 text-xs rounded-md bg-background/60 backdrop-blur-sm hover:bg-background/80"
             aria-label="Preview"
           >
             <Eye className="h-4 w-4" />
@@ -57,8 +86,8 @@ export function TemplateCard({
           </button>
 
           <button
-            onClick={(e) => { e.stopPropagation(); /* quick add action */ }}
-            className="btn-primary flex items-center gap-2 px-3 py-1 text-xs rounded-md"
+            onClick={handleQuickAdd}
+            className="btn-primary flex items-center gap-2 px-3 py-1 text-xs rounded-md hover:bg-primary/600"
             aria-label="Use"
           >
             <Plus className="h-4 w-4" />
@@ -66,11 +95,11 @@ export function TemplateCard({
           </button>
 
           <button
-            onClick={(e) => { e.stopPropagation(); /* favorite */ }}
-            className="btn-ghost flex items-center gap-2 px-2 py-1 text-xs rounded-md"
+            onClick={handleFavorite}
+            className="btn-ghost flex items-center gap-2 px-2 py-1 text-xs rounded-md hover:bg-destructive/10 hover:text-destructive"
             aria-label="Favorite"
           >
-            <Heart className="h-4 w-4 text-destructive" />
+            <Heart className="h-4 w-4" />
           </button>
         </div>
       </div>

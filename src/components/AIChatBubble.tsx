@@ -106,7 +106,7 @@ export function AIChatBubble({ message, onRegenerate, isGenerating }: AIChatBubb
 
                   {/* Preview Dialog */}
                   <Dialog open={showPreview} onOpenChange={setShowPreview}>
-                    <DialogContent>
+                    <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
                       <DialogHeader>
                         <DialogTitle>Preview before applying</DialogTitle>
                       </DialogHeader>
@@ -114,46 +114,48 @@ export function AIChatBubble({ message, onRegenerate, isGenerating }: AIChatBubb
                         Review the content below. Click "Apply" to insert into the document.
                       </DialogDescription>
 
-                      <div className="mt-4 max-h-60 overflow-auto rounded border border-border p-3 bg-background text-sm">
-                        <div 
-                          className="prose prose-sm max-w-none dark:prose-invert prose-p:my-2 prose-h1:text-lg prose-h2:text-base prose-h3:text-sm prose-li:my-1 prose-table:my-2 prose-td:px-2 prose-td:py-1"
-                          dangerouslySetInnerHTML={{ __html: filledContent ?? message.applyContent }}
-                        />
-                      </div>
-
-                      {/* Fill details section - show detected placeholders */}
-                      {showFillDetails && (
-                        <div className="mt-3 p-3 border rounded bg-muted">
-                          <div className="mb-2 font-semibold text-sm">Fill details to replace placeholders</div>
-                          <div className="grid grid-cols-1 gap-2">
-                            {Object.keys(placeholders).map((ph) => (
-                              <div key={ph} className="flex gap-2">
-                                <label className="w-36 text-sm mt-2">{ph}:</label>
-                                <input
-                                  className="input-base flex-1"
-                                  value={placeholders[ph] || ''}
-                                  onChange={(e) => setPlaceholders(prev => ({ ...prev, [ph]: e.target.value }))}
-                                  placeholder={`Enter ${ph}`}
-                                />
-                              </div>
-                            ))}
-                          </div>
-                          <div className="flex gap-2 mt-3">
-                            <Button size="sm" onClick={() => {
-                              // Replace placeholders in the applyContent and set filledContent
-                              let content = message.applyContent || '';
-                              Object.keys(placeholders).forEach((ph) => {
-                                const val = placeholders[ph] || '';
-                                const re = new RegExp(`\\[\\s*${ph.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}\\s*\\]`, 'gi');
-                                content = content.replace(re, val);
-                              });
-                              setFilledContent(content);
-                              setShowFillDetails(false);
-                            }}>Apply Details</Button>
-                            <Button size="sm" variant="ghost" onClick={() => setShowFillDetails(false)}>Cancel</Button>
-                          </div>
+                      <div className="flex-1 overflow-auto">
+                        <div className="max-h-40 overflow-auto rounded border border-border p-3 bg-background text-sm">
+                          <div 
+                            className="prose prose-sm max-w-none dark:prose-invert prose-p:my-2 prose-h1:text-lg prose-h2:text-base prose-h3:text-sm prose-li:my-1 prose-table:my-2 prose-td:px-2 prose-td:py-1"
+                            dangerouslySetInnerHTML={{ __html: filledContent ?? message.applyContent }}
+                          />
                         </div>
-                      )}
+
+                        {/* Fill details section - show detected placeholders */}
+                        {showFillDetails && (
+                          <div className="mt-3 p-3 border rounded bg-muted max-h-60 overflow-auto">
+                            <div className="mb-2 font-semibold text-sm sticky top-0 bg-muted pb-2 border-b">Fill details to replace placeholders</div>
+                            <div className="space-y-3">
+                              {Object.keys(placeholders).map((ph) => (
+                                <div key={ph} className="flex items-center gap-3">
+                                  <label className="w-40 text-sm text-right font-medium text-muted-foreground flex-shrink-0 truncate" title={ph}>{ph}:</label>
+                                  <input
+                                    className="flex-1 min-w-0 px-3 py-2 text-sm bg-background border border-input rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                                    value={placeholders[ph] || ''}
+                                    onChange={(e) => setPlaceholders(prev => ({ ...prev, [ph]: e.target.value }))}
+                                    placeholder={`Enter ${ph}`}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                            <div className="flex gap-2 mt-3 sticky bottom-0 bg-muted pt-2 border-t">
+                              <Button size="sm" onClick={() => {
+                                // Replace placeholders in the applyContent and set filledContent
+                                let content = message.applyContent || '';
+                                Object.keys(placeholders).forEach((ph) => {
+                                  const val = placeholders[ph] || '';
+                                  const re = new RegExp(`\\[\\s*${ph.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}\\s*\\]`, 'gi');
+                                  content = content.replace(re, val);
+                                });
+                                setFilledContent(content);
+                                setShowFillDetails(false);
+                              }}>Apply Details</Button>
+                              <Button size="sm" variant="ghost" onClick={() => setShowFillDetails(false)}>Cancel</Button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
 
                       <DialogFooter className="mt-4">
                         <div className="flex flex-col gap-2 w-full">

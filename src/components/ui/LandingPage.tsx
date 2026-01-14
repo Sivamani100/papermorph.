@@ -149,8 +149,8 @@ const LandingPage = () => {
             </nav>
 
             <div className="hidden md:flex items-center gap-4">
-              <button className="px-5 py-2.5 text-foreground text-sm font-medium hover:text-primary transition-colors">Log In</button>
-              <button onClick={() => navigate('/app')} className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-full btn-3d-orange">Get Started</button>
+              <button onClick={() => navigate('/auth/login')} className="px-5 py-2.5 text-foreground text-sm font-medium hover:text-primary transition-colors">Log In</button>
+              <button onClick={() => navigate('/auth/register')} className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-full btn-3d-orange">Get Started</button>
             </div>
 
             <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -164,7 +164,7 @@ const LandingPage = () => {
                 {navLinks.map((link) => (
                   <a key={link.name} href={link.href} className="text-muted-foreground hover:text-foreground transition-colors py-2 text-sm" onClick={() => setMobileMenuOpen(false)}>{link.name}</a>
                 ))}
-                <button onClick={() => navigate('/app')} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-full btn-3d-orange w-full mt-2">Get Started</button>
+                <button onClick={() => navigate('/auth/register')} className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-full btn-3d-orange w-full mt-2">Get Started</button>
               </nav>
             </div>
           )}
@@ -189,7 +189,7 @@ const LandingPage = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <button onClick={() => navigate('/app')} className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-full btn-3d-orange flex items-center gap-2">
+              <button onClick={() => navigate('/auth/register')} className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-full btn-3d-orange flex items-center gap-2">
                 Start Writing Free <ArrowRight className="h-4.5 w-4.5" />
               </button>
               <button className="px-8 py-3 bg-secondary text-foreground font-semibold rounded-lg border border-border flex items-center gap-2 btn-3d">
@@ -539,7 +539,7 @@ const LandingPage = () => {
                     </li>
                   ))}
                 </ul>
-                <button onClick={() => navigate('/app')} className={`w-full py-2.5 rounded-full font-semibold text-sm transition-all ${plan.highlighted ? 'bg-foreground text-background btn-3d' : 'bg-primary text-primary-foreground btn-3d-orange'}`}>
+                <button onClick={() => navigate('/auth/register')} className={`w-full py-2.5 rounded-full font-semibold text-sm transition-all ${plan.highlighted ? 'bg-foreground text-background btn-3d' : 'bg-primary text-primary-foreground btn-3d-orange'}`}>
                   Get Started
                 </button>
               </div>
@@ -613,7 +613,7 @@ const LandingPage = () => {
             <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4">Ready to Transform Your <span className="text-primary">Writing?</span></h2>
             <p className="text-muted-foreground mb-8 max-w-xl mx-auto">Join 500,000+ users who write smarter with PaperMorph.</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <button onClick={() => navigate('/app')} className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-full btn-3d-orange flex items-center gap-2">
+              <button onClick={() => navigate('/auth/register')} className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-full btn-3d-orange flex items-center gap-2">
                 Get Started Free <ArrowRight className="h-4.5 w-4.5" />
               </button>
               <button className="px-8 py-3 bg-secondary text-foreground font-semibold rounded-lg border border-border flex items-center gap-2 btn-3d">

@@ -134,103 +134,90 @@ export const useAISidebar = create<AISidebarState>((set, get) => ({
       messages: [...state.messages, assistantMessage],
     }));
 
-    // If there's a pending intent for email composition, treat this user's message as the details
-    const pending = get().pendingIntent;
-    if (pending && pending.type === 'email') {
-      // Clear pending intent immediately (we'll fulfill it now)
-      set({ pendingIntent: null });
+    // Disable pending intent handling
+    // const pending = get().pendingIntent;
+    // if (pending && pending.type === 'email') {
+    //   // Clear pending intent immediately (we'll fulfill it now)
+    //   set({ pendingIntent: null });
 
-      // Proceed to call API with an instruction to return ONLY the email content
-      try {
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': 'Bearer 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',
-            'Content-Type': 'application/json',
-            'HTTP-Referer': 'https://papermorph.com',
-            'X-Title': 'Papermorph',
-          },
-          body: JSON.stringify({
-            model: 'tngtech/tng-r1t-chimera:free',
-            messages: [
-              { role: 'system', content: 'You are Papermorph assistant. When asked to compose an email, ask clarifying questions. When provided with email details, produce ONLY the final email text (Subject line + body) with no extra commentary.' },
-              // include previous messages for context
-              ...get().messages.map(msg => ({ role: msg.role, content: msg.content })),
-              { role: 'user', content },
-            ],
-            stream: true,
-          }),
-        });
+    //   // Proceed to call API with an instruction to return ONLY email content
+    //   try {
+    //     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    //         method: 'POST',
+    //         headers: {
+    //           'Authorization': 'Bearer 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',
+    //           'Content-Type': 'application/json',
+    //           'HTTP-Referer': 'https://papermorph.com',
+    //           'X-Title': 'Papermorph',
+    //         },
+    //         body: JSON.stringify({
+    //           model: 'tngtech/tng-r1t-chimera:free',
+    //           messages: [
+    //             { role: 'system', content: 'You are Papermorph assistant. When asked to compose an email, ask clarifying questions. When provided with email details, produce ONLY the final email text (Subject line + body) with no extra commentary.' },
+    //             // include previous messages for context
+    //             ...get().messages.map(msg => ({ role: msg.role, content: msg.content })),
+    //             { role: 'user', content },
+    //           ],
+    //           stream: true,
+    //         }),
+    //     });
 
-        if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
+    //     if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
 
-        const reader = response.body?.getReader();
-        const decoder = new TextDecoder();
-        let done = false;
-        let fullResponse = '';
+    //     const reader = response.body?.getReader();
+    //     const decoder = new TextDecoder();
+    //     let done = false;
+    //     let fullResponse = '';
 
-        if (!reader) throw new Error('Failed to read response stream');
+    //     if (!reader) throw new Error('Failed to read response stream');
 
-        while (!done) {
-          const { value, done: doneReading } = await reader.read();
-          done = doneReading;
-          if (value) {
-            const chunk = decoder.decode(value, { stream: true });
-            const lines = chunk.split('\n').filter(line => line.trim() !== '');
-            for (const line of lines) {
-              if (line.startsWith('data: ')) {
-                const data = line.replace('data: ', '');
-                if (data === '[DONE]') { done = true; break; }
-                try {
-                  const parsed = JSON.parse(data);
-                  const c = parsed.choices[0]?.delta?.content || '';
-                  if (c) {
-                    // Accumulate fullResponse but DO NOT update visible message until stream completes
-                    fullResponse += c;
-                  }
-                } catch (e) {
-                  console.error('Error parsing chunk:', e);
-                }
-              }
-            }
-          }
-        }
+    //     while (!done) {
+    //       const { value, done: doneReading } = await reader.read();
+    //       done = doneReading;
+    //       if (value) {
+    //         const chunk = decoder.decode(value, { stream: true });
+    //         const lines = chunk.split('\n').filter(line => line.trim() !== '');
+    //         for (const line of lines) {
+    //           if (line.startsWith('data: ')) {
+    //             const data = line.replace('data: ', '');
+    //             if (data === '[DONE]') { done = true; break; }
+    //             try {
+    //               const parsed = JSON.parse(data);
+    //               const c = parsed.choices[0]?.delta?.content || '';
+    //               if (c) {
+    //                 // Accumulate fullResponse but DO NOT update visible message until stream completes
+    //                 fullResponse += c;
+    //               }
+    //             } catch (e) {
+    //               console.error('Error parsing chunk:', e);
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
 
-        // When done, store the entire final email as applyContent (we instructed model to return only email)
-        // Convert to readable text for display but keep original for apply
-        const displayEmail = isHTMLContent(fullResponse) ? htmlToReadableText(fullResponse) : fullResponse;
-        set((state) => ({ messages: state.messages.map(m => m.id === assistantMessageId ? { ...m, content: displayEmail, applyContent: sanitizeHTML(fullResponse) } : m) }));
-      } catch (err) {
-        console.error('Error during pending email generation', err);
-        set((state) => ({ messages: state.messages.map(m => m.id === assistantMessageId ? { ...m, content: 'Sorry, failed to generate email.' } : m) }));
-      } finally {
-        set({ isGenerating: false });
-      }
+    //     // When done, store the entire final email as applyContent (we instructed model to return only email)
+    //     // Convert to readable text for display but keep original for apply
+    //     const displayEmail = isHTMLContent(fullResponse) ? htmlToReadableText(fullResponse) : fullResponse;
+    //     set((state) => ({ messages: state.messages.map(m => m.id === assistantMessageId ? { ...m, content: displayEmail, applyContent: sanitizeHTML(fullResponse) } : m) }));
+    //   } catch (err) {
+    //     console.error('Error during pending email generation', err);
+    //     set((state) => ({ messages: state.messages.map(m => m.id === assistantMessageId ? { ...m, content: 'Sorry, failed to generate email.' } : m) }));
+    //   } finally {
+    //     set({ isGenerating: false });
+    //   }
 
-      return;
-    }
+    //   return;
+    // }
 
     try {
-      // If this user message appears to be a request to compose an email, start a short clarifying flow
-      const emailIntentRegex = /\b(write an email|compose an email|draft an email|create an email|email to|send an email)\b/i;
-      if (emailIntentRegex.test(content)) {
-        // Ask for minimal required details: recipient, subject, tone, and key points
-        const followup = `To compose your email, please provide the following details (reply with them in one message):\n\n- Recipient Name\n- Subject Line\n- Tone (Formal / Semi-formal / Casual)\n- Key points to include (brief)\n\nOnce you reply with these, I'll generate the final email for you.`;
-        // Replace the empty assistant message with this follow-up
-        set((state) => ({ messages: state.messages.map(m => m.id === assistantMessageId ? { ...m, content: followup } : m) }));
-        // Set pending intent so the next user message will be treated as details
-        set({ pendingIntent: { type: 'email', assistantMessageId } });
-        set({ isGenerating: false });
-        return;
-      }
-
       // Build enhanced system prompt using PaperMorph AI training
       const systemPrompt = buildEnhancedSystemPrompt(documentContext || '', content);
 
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json',
           'HTTP-Referer': 'https://papermorph.com',
           'X-Title': 'Papermorph',

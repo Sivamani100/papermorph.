@@ -28,6 +28,7 @@ import {
   Sparkles,
   Settings2,
   MoreHorizontal,
+  Move,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -49,7 +50,18 @@ interface ToolbarProps {
   selectedFontSize: string;
 }
 
-const fonts = ['Inter', 'Arial', 'Times New Roman', 'Georgia', 'Verdana', 'Courier New', 'Consolas'];
+// Organized font categories
+const fontCategories = {
+  'Sans-serif': ['Inter', 'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Poppins', 'Ubuntu', 'Raleway', 'Oswald', 'Source Sans Pro', 'Nunito', 'Rubik'],
+  'Serif': ['Playfair Display', 'Merriweather', 'Slabo 27px'],
+  'Display': ['Bebas Neue', 'Dancing Script', 'Pacifico', 'Caveat', 'Kalam', 'Permanent Marker', 'Shadows Into Light', 'Architects Daughter', 'Indie Flower'],
+  'Monospace': ['Courier Prime', 'Space Mono', 'Fira Code', 'JetBrains Mono', 'IBM Plex Mono', 'Source Code Pro', 'Anonymous Pro', 'Inconsolata'],
+  'Special': ['Libre Barcode 39 Text', 'Press Start 2P', 'VT323', 'Major Mono Display'],
+  'System': ['Arial', 'Times New Roman', 'Georgia', 'Verdana', 'Courier New', 'Consolas']
+};
+
+// Flatten for backward compatibility
+const fonts = Object.values(fontCategories).flat();
 const fontSizes = ['8', '9', '10', '11', '12', '14', '16', '18', '20', '24', '28', '32', '36', '48', '72'];
 const headingSizes = [
   { label: 'Heading 1', value: 'h1', preview: 'H1' },
@@ -80,7 +92,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('undo')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Undo (Ctrl+Z)"
           >
             <Undo2 className="h-4 w-4" />
@@ -89,7 +101,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('redo')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Redo (Ctrl+Y)"
           >
             <Redo2 className="h-4 w-4" />
@@ -120,15 +132,32 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
                 <ChevronDown className="h-3 w-3 ml-1 flex-shrink-0" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className={`w-48 ${
+            <DropdownMenuContent align="start" className={`w-64 max-h-96 overflow-y-auto ${
               theme === 'dark' ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-300'
             }`}>
-              {fonts.map(font => (
-                <DropdownMenuItem key={font} onClick={() => onAction('fontFamily', font)} className={
-                  theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
-                }>
-                  <span style={{ fontFamily: font }} className="text-sm">{font}</span>
-                </DropdownMenuItem>
+              {Object.entries(fontCategories).map(([category, categoryFonts]) => (
+                <div key={category}>
+                  <div className={`px-2 py-1 text-xs font-semibold ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                  }`}>
+                    {category}
+                  </div>
+                  {categoryFonts.map(font => (
+                    <DropdownMenuItem 
+                      key={font} 
+                      onClick={() => onAction('fontFamily', font)} 
+                      className={
+                        theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+                      }
+                    >
+                      <span style={{ fontFamily: font }} className="text-sm flex-1">{font}</span>
+                      {selectedFont === font && (
+                        <div className="w-2 h-2 bg-primary rounded-full ml-2" />
+                      )}
+                    </DropdownMenuItem>
+                  ))}
+                  {category !== 'System' && <DropdownMenuSeparator />}
+                </div>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -215,9 +244,9 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             size="sm"
             onClick={() => onAction('bold')}
             className={cn(
-              'h-8 w-8 transition-colors',
+              'h-8 w-8 transition-all duration-200 hover:scale-105 active:scale-95',
               isActive('bold') 
-                ? 'bg-primary text-primary-foreground border border-primary'
+                ? 'bg-primary text-primary-foreground border border-primary shadow-lg'
                 : 'hover:bg-primary/10 hover:text-primary'
             )}
             title="Bold (Ctrl+B)"
@@ -229,9 +258,9 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             size="sm"
             onClick={() => onAction('italic')}
             className={cn(
-              'h-8 w-8 transition-colors',
+              'h-8 w-8 transition-all duration-200 hover:scale-105 active:scale-95',
               isActive('italic') 
-                ? 'bg-primary text-primary-foreground border border-primary'
+                ? 'bg-primary text-primary-foreground border border-primary shadow-lg'
                 : 'hover:bg-primary/10 hover:text-primary'
             )}
             title="Italic (Ctrl+I)"
@@ -243,9 +272,9 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             size="sm"
             onClick={() => onAction('underline')}
             className={cn(
-              'h-8 w-8 transition-colors',
+              'h-8 w-8 transition-all duration-200 hover:scale-105 active:scale-95',
               isActive('underline') 
-                ? 'bg-primary text-primary-foreground border border-primary'
+                ? 'bg-primary text-primary-foreground border border-primary shadow-lg'
                 : 'hover:bg-primary/10 hover:text-primary'
             )}
             title="Underline (Ctrl+U)"
@@ -257,9 +286,9 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             size="sm"
             onClick={() => onAction('strikethrough')}
             className={cn(
-              'h-8 w-8 transition-colors',
+              'h-8 w-8 transition-all duration-200 hover:scale-105 active:scale-95',
               isActive('strikethrough') 
-                ? 'bg-primary text-primary-foreground border border-primary'
+                ? 'bg-primary text-primary-foreground border border-primary shadow-lg'
                 : 'hover:bg-primary/10 hover:text-primary'
             )}
             title="Strikethrough"
@@ -273,7 +302,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('subscript')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Subscript"
           >
             <span className="text-sm font-medium">X₂</span>
@@ -282,7 +311,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('superscript')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Superscript"
           >
             <span className="text-sm font-medium">X²</span>
@@ -339,6 +368,31 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
                 <div className="w-4 h-4 bg-green-500 rounded mr-2" />
                 <span className="text-sm">Green</span>
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#f59e0b')} className={
+                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+              }>
+                <div className="w-4 h-4 bg-amber-500 rounded mr-2" />
+                <span className="text-sm">Amber</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#8b5cf6')} className={
+                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+              }>
+                <div className="w-4 h-4 bg-violet-500 rounded mr-2" />
+                <span className="text-sm">Violet</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#ec4899')} className={
+                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+              }>
+                <div className="w-4 h-4 bg-pink-500 rounded mr-2" />
+                <span className="text-sm">Pink</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => onAction('textColor', '#6b7280')} className={
+                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+              }>
+                <div className="w-4 h-4 bg-gray-500 rounded mr-2" />
+                <span className="text-sm">Gray</span>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           
@@ -365,7 +419,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('alignLeft')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Align Left"
           >
             <AlignLeft className="h-4 w-4" />
@@ -374,7 +428,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('alignCenter')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Align Center"
           >
             <AlignCenter className="h-4 w-4" />
@@ -383,7 +437,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('alignRight')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Align Right"
           >
             <AlignRight className="h-4 w-4" />
@@ -392,7 +446,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('alignJustify')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Justify"
           >
             <AlignJustify className="h-4 w-4" />
@@ -418,7 +472,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
           </Button>
         </div>
 
-        {/* Lists Group - Moved from second row */}
+        {/* Lists Group */}
         <div className={`flex items-center gap-1 pr-2 transition-all duration-300 ${
           isCompactLayout ? 'shrink-0' : 'flex-shrink-0'
         }`}>
@@ -426,7 +480,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('orderedList')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Numbered List"
           >
             <ListOrdered className="h-4 w-4" />
@@ -435,7 +489,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('unorderedList')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Bullet List"
           >
             <List className="h-4 w-4" />
@@ -454,7 +508,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('link')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Insert Link"
           >
             <Link className="h-4 w-4" />
@@ -463,9 +517,9 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('image')}
-            className={`h-8 transition-colors ${
+            className={`h-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95 ${
               isCompactLayout ? 'px-2 gap-2' : 'w-8'
-            } hover:bg-primary/10 hover:text-primary`}
+            }`}
             title="Insert Image"
           >
             <Image className="h-4 w-4" />
@@ -476,7 +530,71 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
               <Button
                 variant="ghost"
                 size="sm"
-                className={`h-8 transition-colors ${
+                className={`h-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95 ${
+                  isCompactLayout ? 'px-2 gap-2' : 'w-8'
+                }`}
+                title="Image Position"
+              >
+                <Move className="h-4 w-4" />
+                {isCompactLayout && <span className="text-sm">Position</span>}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className={`w-48 ${
+              theme === 'dark' ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-300'
+            }`}>
+              <DropdownMenuItem onClick={() => onAction('imagePosition', 'left')} className={
+                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+              }>
+                <AlignLeft className="h-4 w-4 mr-2" />
+                <span className="text-sm">Align Left</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('imagePosition', 'center')} className={
+                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+              }>
+                <AlignCenter className="h-4 w-4 mr-2" />
+                <span className="text-sm">Align Center</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('imagePosition', 'right')} className={
+                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+              }>
+                <AlignRight className="h-4 w-4 mr-2" />
+                <span className="text-sm">Align Right</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => onAction('imagePosition', 'inline')} className={
+                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+              }>
+                <span className="text-sm">Inline with Text</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('imagePosition', 'top')} className={
+                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+              }>
+                <span className="text-sm">Top of Text</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('imagePosition', 'bottom')} className={
+                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+              }>
+                <span className="text-sm">Bottom of Text</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => onAction('imagePosition', 'behind')} className={
+                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+              }>
+                <span className="text-sm">Behind Text</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('imagePosition', 'front')} className={
+                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+              }>
+                <span className="text-sm">In Front of Text</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95 ${
                   isCompactLayout ? 'px-2 gap-2' : 'w-8'
                 } ${
                   theme === 'dark' 
@@ -530,7 +648,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('code')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Code Format"
           >
             <Code className="h-4 w-4" />
@@ -539,7 +657,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('quote')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+            className="h-8 w-8 transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-105 active:scale-95"
             title="Block Quote"
           >
             <Quote className="h-4 w-4" />
@@ -636,7 +754,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
             variant="ghost"
             size="sm"
             onClick={() => onAction('ai-assist')}
-            className={`h-8 gap-2 hover:bg-primary/10 hover:text-primary transition-colors ${
+            className={`h-8 gap-2 hover:bg-primary/10 hover:text-primary transition-all duration-200 hover:scale-105 active:scale-95 ${
               isCompactLayout ? 'px-2' : 'px-3'
             }`}
             title="AI Assistant"
@@ -650,7 +768,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 hover:bg-accent/50 transition-colors"
+                className="h-8 w-8 hover:bg-accent/50 transition-all duration-200 hover:scale-105 active:scale-95"
                 title="More Tools"
               >
                 <MoreHorizontal className="h-4 w-4" />
