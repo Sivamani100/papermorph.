@@ -145,7 +145,7 @@ export const useAISidebar = create<AISidebarState>((set, get) => ({
     //     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     //         method: 'POST',
     //         headers: {
-    //           'Authorization': 'Bearer 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',
+    //           'Authorization': 'Bearer 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',
     //           'Content-Type': 'application/json',
     //           'HTTP-Referer': 'https://papermorph.com',
     //           'X-Title': 'Papermorph',
@@ -217,7 +217,7 @@ export const useAISidebar = create<AISidebarState>((set, get) => ({
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json',
           'HTTP-Referer': 'https://papermorph.com',
           'X-Title': 'Papermorph',
