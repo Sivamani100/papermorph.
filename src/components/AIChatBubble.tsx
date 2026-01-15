@@ -77,7 +77,10 @@ export function AIChatBubble({ message, onRegenerate, isGenerating }: AIChatBubb
             <TypingIndicator className="text-muted-foreground" />
           ) : (
             <>
-              <p className="whitespace-pre-wrap leading-normal break-words">{message.content}</p>
+              <p className={cn(
+                "whitespace-pre-wrap leading-normal break-words",
+                message.isError ? "text-red-500 font-medium" : ""
+              )}>{message.content}</p>
               
               {!isUser && message.applyContent && (
                 <div className="mt-2 flex justify-end">
@@ -272,7 +275,7 @@ export function AIChatBubble({ message, onRegenerate, isGenerating }: AIChatBubb
           {/* Copy Button */}
           <Button
             variant="ghost"
-            size="icon-sm"
+            size="icon"
             className="h-5 w-5"
             onClick={handleCopy}
             title="Copy"
@@ -287,7 +290,7 @@ export function AIChatBubble({ message, onRegenerate, isGenerating }: AIChatBubb
           {/* Bookmark */}
           <Button
             variant="ghost"
-            size="icon-sm"
+            size="icon"
             className={cn('h-5 w-5', isBookmarked && 'text-yellow-500')}
             onClick={() => setIsBookmarked(!isBookmarked)}
             title="Bookmark"
@@ -299,7 +302,7 @@ export function AIChatBubble({ message, onRegenerate, isGenerating }: AIChatBubb
           <div className="flex items-center gap-0.5 border-l border-border pl-0.5 ml-0.5">
             <Button
               variant="ghost"
-              size="icon-sm"
+              size="icon"
               className={cn('h-5 w-5', reaction === 'helpful' && 'bg-primary/10')}
               onClick={() => handleReaction('helpful')}
               title="Helpful"
@@ -308,7 +311,7 @@ export function AIChatBubble({ message, onRegenerate, isGenerating }: AIChatBubb
             </Button>
             <Button
               variant="ghost"
-              size="icon-sm"
+              size="icon"
               className={cn('h-5 w-5', reaction === 'unhelpful' && 'bg-destructive/10')}
               onClick={() => handleReaction('unhelpful')}
               title="Not helpful"
@@ -321,7 +324,7 @@ export function AIChatBubble({ message, onRegenerate, isGenerating }: AIChatBubb
           {onRegenerate && (
             <Button
               variant="ghost"
-              size="icon-sm"
+              size="icon"
               className="h-5 w-5"
               onClick={onRegenerate}
               title="Regenerate"
@@ -333,7 +336,7 @@ export function AIChatBubble({ message, onRegenerate, isGenerating }: AIChatBubb
           {/* Follow-up Suggestions */}
           <Button
             variant="ghost"
-            size="icon-sm"
+            size="icon"
             className="h-5 w-5"
             onClick={() => setShowSuggestions(!showSuggestions)}
             title="Suggestions"

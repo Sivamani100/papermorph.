@@ -8,6 +8,7 @@ export interface Message {
   content: string;
   timestamp: Date;
   applyContent?: string; // The content to apply to the document
+  isError?: boolean; // Flag for error messages
 }
 
 export type WizardType = 'letter' | 'report' | 'proposal' | 'essay' | null;
@@ -217,7 +218,7 @@ export const useAISidebar = create<AISidebarState>((set, get) => ({
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json',
           'HTTP-Referer': 'https://papermorph.com',
           'X-Title': 'Papermorph',
@@ -353,13 +354,29 @@ export const useAISidebar = create<AISidebarState>((set, get) => ({
     } catch (error) {
       console.error('Error calling OpenRouter API:', error);
       
-      // Update with error message
+      // Better error handling with specific error types
+      let errorMessage = 'Sorry, I encountered an error while processing your request.';
+      
+      if (error instanceof TypeError) {
+        errorMessage = 'Network error: Please check your internet connection and try again.';
+      } else if (error.message?.includes('401') || error.message?.includes('unauthorized')) {
+        errorMessage = 'API authentication error: Please check your API key and try again.';
+      } else if (error.message?.includes('429')) {
+        errorMessage = 'Rate limit exceeded: Please wait a moment and try again.';
+      } else if (error.message?.includes('500')) {
+        errorMessage = 'Service temporarily unavailable: Please try again in a few moments.';
+      } else if (error.message?.includes('timeout')) {
+        errorMessage = 'Request timeout: Please try again.';
+      }
+      
+      // Update with specific error message
       set((state) => ({
         messages: state.messages.map(msg => 
           msg.id === assistantMessageId 
             ? { 
                 ...msg, 
-                content: 'Sorry, I encountered an error while processing your request. Please try again later.' 
+                content: errorMessage,
+                isError: true
               } 
             : msg
         ),
