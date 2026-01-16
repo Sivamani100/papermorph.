@@ -341,7 +341,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
                 <Palette className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className={`w-48 ${
+            <DropdownMenuContent align="start" className={`w-56 ${
               theme === 'dark' ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-300'
             }`}>
               <DropdownMenuItem onClick={() => onAction('textColor', '#000000')} className={
@@ -350,61 +350,175 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, activeFormats, selectedFont
                 <div className="w-4 h-4 bg-black rounded mr-2" />
                 <span className="text-sm">Black</span>
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#ffffff')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-white border border-gray-300 rounded mr-2" />
+                <span className="text-sm">White</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => onAction('textColor', '#ef4444')} className={
-                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
-              }>
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
                 <div className="w-4 h-4 bg-red-500 rounded mr-2" />
                 <span className="text-sm">Red</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onAction('textColor', '#3b82f6')} className={
-                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
-              }>
-                <div className="w-4 h-4 bg-blue-500 rounded mr-2" />
-                <span className="text-sm">Blue</span>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#dc2626')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-red-600 rounded mr-2" />
+                <span className="text-sm">Dark Red</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onAction('textColor', '#10b981')} className={
-                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
-              }>
-                <div className="w-4 h-4 bg-green-500 rounded mr-2" />
-                <span className="text-sm">Green</span>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#f97316')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-orange-500 rounded mr-2" />
+                <span className="text-sm">Orange</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onAction('textColor', '#f59e0b')} className={
-                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
-              }>
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
                 <div className="w-4 h-4 bg-amber-500 rounded mr-2" />
                 <span className="text-sm">Amber</span>
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#eab308')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-yellow-500 rounded mr-2" />
+                <span className="text-sm">Yellow</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => onAction('textColor', '#22c55e')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-green-500 rounded mr-2" />
+                <span className="text-sm">Green</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#16a34a')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-green-600 rounded mr-2" />
+                <span className="text-sm">Dark Green</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#06b6d4')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-cyan-500 rounded mr-2" />
+                <span className="text-sm">Cyan</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#3b82f6')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-blue-500 rounded mr-2" />
+                <span className="text-sm">Blue</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#1e40af')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-blue-700 rounded mr-2" />
+                <span className="text-sm">Dark Blue</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => onAction('textColor', '#8b5cf6')} className={
-                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
-              }>
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
                 <div className="w-4 h-4 bg-violet-500 rounded mr-2" />
                 <span className="text-sm">Violet</span>
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#7c3aed')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-violet-600 rounded mr-2" />
+                <span className="text-sm">Purple</span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onAction('textColor', '#ec4899')} className={
-                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
-              }>
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
                 <div className="w-4 h-4 bg-pink-500 rounded mr-2" />
                 <span className="text-sm">Pink</span>
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#db2777')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-pink-600 rounded mr-2" />
+                <span className="text-sm">Hot Pink</span>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => onAction('textColor', '#6b7280')} className={
-                theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
-              }>
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
                 <div className="w-4 h-4 bg-gray-500 rounded mr-2" />
                 <span className="text-sm">Gray</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('textColor', '#374151')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-gray-700 rounded mr-2" />
+                <span className="text-sm">Dark Gray</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => onAction('highlight')}
-            className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
-            title="Highlight Text"
-          >
-            <Highlighter className="h-4 w-4" />
-          </Button>
+          {/* Highlight Color Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 transition-colors hover:bg-primary/10 hover:text-primary"
+                title="Highlight Text"
+              >
+                <Highlighter className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className={`w-56 ${
+              theme === 'dark' ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-300'
+            }`}>
+              <DropdownMenuItem onClick={() => onAction('highlight', '#ffff00')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-yellow-400 rounded mr-2" />
+                <span className="text-sm">Yellow</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('highlight', '#00ff00')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-green-400 rounded mr-2" />
+                <span className="text-sm">Green</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('highlight', '#00ffff')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-cyan-400 rounded mr-2" />
+                <span className="text-sm">Cyan</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('highlight', '#ff00ff')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-pink-400 rounded mr-2" />
+                <span className="text-sm">Magenta</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('highlight', '#ff9900')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-orange-400 rounded mr-2" />
+                <span className="text-sm">Orange</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction('highlight', '#9966ff')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-purple-400 rounded mr-2" />
+                <span className="text-sm">Purple</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => onAction('clearHighlight')} className={
+              theme === 'dark' ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
+            }>
+                <div className="w-4 h-4 bg-transparent border border-gray-400 rounded mr-2" />
+                <span className="text-sm">Clear Highlight</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <Separator orientation="vertical" className={`h-6 mx-1 ${

@@ -550,11 +550,32 @@ const DocumentEditor: React.FC = () => {
         break;
       case 'highlight':
         if (hasSelection) {
-          const isHighlighted = selection.characterFormat.highlightColor === 'Yellow';
-          selection.characterFormat.highlightColor = isHighlighted ? 'NoColor' : 'Yellow';
-          showActionFeedback(isHighlighted ? 'Highlight removed' : '🖍️ Highlight applied');
+          const currentHighlight = selection.characterFormat.highlightColor;
+          if (value === 'clear') {
+            // Clear highlight
+            selection.characterFormat.highlightColor = 'NoColor';
+            showActionFeedback('🖍️ Highlight removed');
+          } else {
+            // Apply new highlight color
+            (selection.characterFormat as any).highlightColor = value;
+            const colorName = value === '#ffff00' ? 'Yellow' :
+                           value === '#00ff00' ? 'Green' :
+                           value === '#00ffff' ? 'Cyan' :
+                           value === '#ff00ff' ? 'Magenta' :
+                           value === '#ff9900' ? 'Orange' :
+                           value === '#9966ff' ? 'Purple' : 'Yellow';
+            showActionFeedback(`🖍️ ${colorName} highlight applied`);
+          }
         } else {
           showInfo('Select text to apply highlight');
+        }
+        break;
+      case 'clearHighlight':
+        if (hasSelection) {
+          selection.characterFormat.highlightColor = 'NoColor';
+          showActionFeedback('🖍️ Highlight cleared');
+        } else {
+          showInfo('Select text to clear highlight');
         }
         break;
       case 'fontFamily':
@@ -586,20 +607,17 @@ const DocumentEditor: React.FC = () => {
         break;
       case 'textColor':
         if (value && hasSelection) {
-          // Map color values to Syncfusion HighlightColor enum
-          const colorMap: Record<string, string> = {
-            '#000000': 'Black',
-            '#ef4444': 'Red', 
-            '#3b82f6': 'Blue',
-            '#10b981': 'Green',
-            '#f59e0b': 'Yellow',
-            '#8b5cf6': 'Violet',
-            '#ec4899': 'Pink',
-            '#6b7280': 'Gray',
-            '#ffff00': 'Yellow'
-          };
-          const highlightColor = colorMap[value] || 'Black';
-          selection.characterFormat.highlightColor = highlightColor as any;
+          // Try direct assignment with proper type casting
+          try {
+            (selection.characterFormat as any).fontColor = value;
+          } catch (e) {
+            try {
+              (selection.characterFormat as any).textColor = value;
+            } catch (e2) {
+              // Last resort - try to set it via the selection's style
+              (selection as any).characterFormat.color = value;
+            }
+          }
           showActionFeedback('🎨 Text color changed');
         } else if (!value) {
           showError('Please select a color');
