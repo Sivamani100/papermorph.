@@ -178,104 +178,20 @@ async function parseDocxWithMammoth(file: File): Promise<ParsedContent> {
 /**
  * Enhance table styling in HTML
  */
-/**
- * Enhance table styling while preserving existing alignment and styles
- */
 function enhanceTableStyling(html: string): string {
-  // For paragraphs - ensure they have explicit left alignment as default
-  html = html.replace(
-    /<p([^>]*)>/g,
-    (match, attrs) => {
-      // Only add text-align if not already present
-      if (!attrs.includes('style') && !attrs.includes('align')) {
-        return '<p' + attrs + ' style="text-align: left;">';
-      }
-      return match;
-    }
+  return html.replace(
+    /<table[^>]*>/g,
+    '<table style="border-collapse: collapse; width: 100%; margin: 15px 0; border: 1px solid #ddd;">'
+  ).replace(
+    /<tr[^>]*>/g,
+    '<tr style="border: 1px solid #ddd;">'
+  ).replace(
+    /<td[^>]*>/g,
+    '<td style="border: 1px solid #ddd; padding: 10px; text-align: left;">'
+  ).replace(
+    /<th[^>]*>/g,
+    '<th style="border: 1px solid #ddd; padding: 10px; background-color: #f5f5f5; font-weight: bold; text-align: left;">'
   );
-
-  // For tables - preserve existing styles but add defaults
-  html = html.replace(
-    /<table([^>]*)>/g,
-    (match, attrs) => {
-      // Check if style attribute exists
-      const hasStyle = /style\s*=/.test(match);
-      if (hasStyle) {
-        // Insert styles into existing style attribute
-        return match.replace(
-          /style\s*=\s*["']([^"']*)["']/,
-          (styleMatch, styleContent) => {
-            const styles = `border-collapse: collapse; width: 100%; margin: 15px 0; border: 1px solid #ddd; text-align: left; ${styleContent}`;
-            return `style="${styles}"`;
-          }
-        );
-      } else {
-        return '<table' + attrs + ' style="border-collapse: collapse; width: 100%; margin: 15px 0; border: 1px solid #ddd; text-align: left;">';
-      }
-    }
-  );
-
-  // For table rows - preserve existing styles
-  html = html.replace(
-    /<tr([^>]*)>/g,
-    (match, attrs) => {
-      const hasStyle = /style\s*=/.test(match);
-      if (hasStyle) {
-        return match.replace(
-          /style\s*=\s*["']([^"']*)["']/,
-          (styleMatch, styleContent) => {
-            const styles = `border: 1px solid #ddd; ${styleContent}`;
-            return `style="${styles}"`;
-          }
-        );
-      } else {
-        return '<tr' + attrs + ' style="border: 1px solid #ddd;">';
-      }
-    }
-  );
-
-  // For table cells - preserve and add left alignment
-  html = html.replace(
-    /<td([^>]*)>/g,
-    (match, attrs) => {
-      const hasStyle = /style\s*=/.test(match);
-      if (hasStyle) {
-        return match.replace(
-          /style\s*=\s*["']([^"']*)["']/,
-          (styleMatch, styleContent) => {
-            // Only add text-align if not already present
-            const alignStyle = /text-align/.test(styleContent) ? '' : 'text-align: left; ';
-            const styles = `border: 1px solid #ddd; padding: 10px; ${alignStyle}${styleContent}`;
-            return `style="${styles}"`;
-          }
-        );
-      } else {
-        return '<td' + attrs + ' style="border: 1px solid #ddd; padding: 10px; text-align: left;">';
-      }
-    }
-  );
-
-  // For table headers - preserve and add left alignment
-  html = html.replace(
-    /<th([^>]*)>/g,
-    (match, attrs) => {
-      const hasStyle = /style\s*=/.test(match);
-      if (hasStyle) {
-        return match.replace(
-          /style\s*=\s*["']([^"']*)["']/,
-          (styleMatch, styleContent) => {
-            const alignStyle = /text-align/.test(styleContent) ? '' : 'text-align: left; ';
-            const styles = `border: 1px solid #ddd; padding: 10px; background-color: #f5f5f5; font-weight: bold; ${alignStyle}${styleContent}`;
-            return `style="${styles}"`;
-          }
-        );
-      } else {
-        return '<th' + attrs + ' style="border: 1px solid #ddd; padding: 10px; background-color: #f5f5f5; font-weight: bold; text-align: left;">';
-      }
-    }
-  );
-
-  return html;
 }
 
 /**
@@ -837,85 +753,19 @@ export function sanitizeHtml(html: string): string {
 }
 
 /**
- * Enhance HTML with proper alignment and formatting preservation
- * Used for both imported documents and AI-generated content
- */
-export function enhanceHtmlAlignment(html: string): string {
-  let enhanced = html;
-
-  // Ensure paragraphs have explicit left alignment
-  enhanced = enhanced.replace(
-    /<p([^>]*)>/g,
-    (match, attrs) => {
-      // Skip if already has text-align
-      if (/style\s*=/.test(match) && /text-align/.test(match)) {
-        return match;
-      }
-      // Add style attribute if doesn't exist
-      if (/style\s*=/.test(match)) {
-        return match.replace(
-          /style\s*=\s*["']([^"']*)["']/,
-          (styleMatch, styleContent) => {
-            return `style="${styleContent}; text-align: left;"`;
-          }
-        );
-      }
-      return '<p' + attrs + ' style="text-align: left;">';
-    }
-  );
-
-  // Ensure headings have left alignment
-  ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].forEach(tag => {
-    const regex = new RegExp(`<${tag}([^>]*)>`, 'g');
-    enhanced = enhanced.replace(regex, (match, attrs) => {
-      if (/style\s*=/.test(match) && /text-align/.test(match)) {
-        return match;
-      }
-      if (/style\s*=/.test(match)) {
-        return match.replace(
-          /style\s*=\s*["']([^"']*)["']/,
-          (styleMatch, styleContent) => {
-            return `style="${styleContent}; text-align: left;"`;
-          }
-        );
-      }
-      return `<${tag}${attrs} style="text-align: left;">`;
-    });
-  });
-
-  // Ensure lists maintain left alignment
-  enhanced = enhanced.replace(
-    /<(?:ul|ol)([^>]*)>/g,
-    (match, attrs) => {
-      if (/style\s*=/.test(match)) {
-        return match.replace(
-          /style\s*=\s*["']([^"']*)["']/,
-          (styleMatch, styleContent) => {
-            return `style="${styleContent}; text-align: left;"`;
-          }
-        );
-      }
-      return match.replace(/(?=>)/, ' style="text-align: left;"');
-    }
-  );
-
-  // Wrap in document-content if not already wrapped
-  if (!enhanced.includes('class="document-content"')) {
-    enhanced = `<div class="document-content">${enhanced}</div>`;
-  }
-
-  return enhanced;
-}
-
-/**
  * Convert parsed content to insertable HTML for editor
  */
 export function convertParsedToEditorHtml(parsed: ParsedContent): string {
   // Sanitize and format for editor
   const sanitized = sanitizeHtml(parsed.html);
 
-  // Enhance alignment
-  const aligned = enhanceHtmlAlignment(sanitized);
+  // Ensure proper structure
+  let html = `<div class="document-content">${sanitized}</div>`;
 
-  return aligned;
+  // If there are tables, wrap them properly
+  if (parsed.tables.length > 0) {
+    html = html.replace(/<table>/g, '<table class="editor-table" border="1">');
+  }
+
+  return html;
 }

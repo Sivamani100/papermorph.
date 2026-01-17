@@ -180,12 +180,52 @@ export function SidebarRight() {
       try {
         const content = editor.documentEditor.serialize();
         const plainText = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+        
+        // Enhanced document analysis
+        const wordCount = plainText.split(/\s+/).filter(word => word.length > 0).length;
+        const charCount = plainText.length;
+        const paragraphCount = plainText.split(/\n\s*\n/).length;
+        const sentenceCount = plainText.split(/[.!?]+/).length;
+        
+        // Detect document type
+        const docType = detectDocumentType(plainText);
+        
+        // Store document statistics
+        const docStats = {
+          wordCount,
+          charCount,
+          paragraphCount,
+          sentenceCount,
+          docType,
+          readingTime: Math.ceil(wordCount / 200), // Average reading speed
+          lastUpdated: new Date().toISOString()
+        };
+        
+        localStorage.setItem('pm:documentStats', JSON.stringify(docStats));
         setDocumentContext(plainText.slice(0, 2000)); // Limit context size
       } catch (error) {
         console.error('Failed to extract document context:', error);
       }
     }
   }, [currentDocument, editor]);
+  
+  // Document type detection
+  const detectDocumentType = (text: string): string => {
+    const lowerText = text.toLowerCase();
+    
+    if (lowerText.includes('dear') && lowerText.includes('sincerely')) return 'Letter';
+    if (lowerText.includes('subject:') && lowerText.includes('to:')) return 'Email';
+    if (lowerText.includes('executive summary') || lowerText.includes('introduction')) return 'Report';
+    if (lowerText.includes('abstract') && lowerText.includes('methodology')) return 'Research Paper';
+    if (lowerText.includes('thesis') || lowerText.includes('dissertation')) return 'Thesis';
+    if (lowerText.includes('contract') || lowerText.includes('agreement')) return 'Legal Document';
+    if (lowerText.includes('invoice') || lowerText.includes('bill')) return 'Invoice';
+    if (lowerText.includes('resume') || lowerText.includes('curriculum vitae')) return 'Resume';
+    if (lowerText.includes('meeting agenda') || lowerText.includes('minutes')) return 'Meeting Document';
+    if (lowerText.includes('chapter') || lowerText.includes('once upon a time')) return 'Book/Story';
+    
+    return 'General Document';
+  };
 
   // AI Usage tracking
   useEffect(() => {
@@ -231,6 +271,141 @@ export function SidebarRight() {
     summarize,
     startWizard,
   } = useAISidebar();
+
+  // Document Statistics Display
+  const DocumentStats = () => {
+    const stats = JSON.parse(localStorage.getItem('pm:documentStats') || '{}');
+    
+    if (!stats.wordCount) return null;
+    
+    return (
+      <div className="p-4 bg-muted/50 rounded-lg mb-4">
+        <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+          <FileText className="w-4 h-4" />
+          Document Statistics
+        </h3>
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Type:</span>
+            <span className="font-medium">{stats.docType}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Words:</span>
+            <span className="font-medium">{stats.wordCount.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Characters:</span>
+            <span className="font-medium">{stats.charCount.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Paragraphs:</span>
+            <span className="font-medium">{stats.paragraphCount}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Sentences:</span>
+            <span className="font-medium">{stats.sentenceCount}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Reading Time:</span>
+            <span className="font-medium">{stats.readingTime} min</span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // AI Usage Display
+  const AIUsageDisplay = () => (
+    <div className="p-4 bg-muted/50 rounded-lg mb-4">
+      <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+        <Brain className="w-4 h-4" />
+        AI Usage
+      </h3>
+      <div className="space-y-2 text-sm">
+        <div className="flex justify-between">
+          <span className="text-muted-foreground">Today:</span>
+          <span className="font-medium">{aiUsage.today}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-muted-foreground">Total:</span>
+          <span className="font-medium">{aiUsage.total}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-muted-foreground">Remaining:</span>
+          <span className="font-medium">{aiUsage.remaining}</span>
+        </div>
+        <div className="mt-2">
+          <Progress value={(aiUsage.remaining / 100) * 100} className="h-2" />
+        </div>
+      </div>
+    </div>
+  );
+
+  // Document Templates Quick Access
+  const DocumentTemplates = () => (
+    <div className="p-4 bg-muted/50 rounded-lg mb-4">
+      <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+        <FileCheck className="w-4 h-4" />
+        Quick Templates
+      </h3>
+      <div className="grid grid-cols-2 gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => sendMessage('Create a professional business letter')}
+          className="justify-start h-8 text-xs"
+        >
+          <Mail className="w-3 h-3 mr-1" />
+          Business Letter
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => sendMessage('Write a professional email')}
+          className="justify-start h-8 text-xs"
+        >
+          <Send className="w-3 h-3 mr-1" />
+          Email
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => sendMessage('Create a comprehensive report')}
+          className="justify-start h-8 text-xs"
+        >
+          <FileBarChart className="w-3 h-3 mr-1" />
+          Report
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => sendMessage('Write a project proposal')}
+          className="justify-start h-8 text-xs"
+        >
+          <Presentation className="w-3 h-3 mr-1" />
+          Proposal
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => sendMessage('Create a professional resume')}
+          className="justify-start h-8 text-xs"
+        >
+          <FileCheck className="w-3 h-3 mr-1" />
+          Resume
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => sendMessage('Write meeting minutes')}
+          className="justify-start h-8 text-xs"
+        >
+          <FileText className="w-3 h-3 mr-1" />
+          Minutes
+        </Button>
+      </div>
+    </div>
+  );
 
   const speakText = (text?: string) => {
     if (!text) return;

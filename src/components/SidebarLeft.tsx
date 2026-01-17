@@ -16,7 +16,6 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { enhanceHtmlAlignment } from '@/utils/documentParser';
 import { toast } from 'sonner';
 import { BUILT_IN_TEMPLATES, searchTemplates, getTemplatesByCategory } from '@/utils/templateLoader';
 import { parseDocument, type ParsedContent } from '@/utils/documentParser';
@@ -972,8 +971,8 @@ Chart placeholder - ${chartType} chart would be rendered here
       const fileName = importPreviewFile.name.replace(/\.[^/.]+$/, '');
       let htmlContent = importPreviewContent.html;
 
-      // Enhance alignment for all block elements
-      htmlContent = enhanceHtmlAlignment(htmlContent);
+      // Wrap content with document-content class for proper styling preservation
+      htmlContent = `<div class="document-content">${htmlContent}</div>`;
 
       console.log(`[Import] Creating document with ${htmlContent.length} characters of HTML content`);
       

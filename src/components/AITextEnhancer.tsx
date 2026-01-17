@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from './ui/dialog';
 import { Button } from './ui/button';
 import { toast } from 'sonner';
-import { Check, X, RotateCcw, Copy, Loader2, Wand2, CheckCircle, Palette, Zap, BookOpen, Minimize2 } from 'lucide-react';
+import { Check, X, RotateCcw, Copy, Loader2, Wand2, CheckCircle, Palette, Zap, BookOpen, Minimize2, Sparkles, GraduationCap, Lightbulb } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAISidebar } from '@/state/useAISidebar';
 
@@ -29,21 +29,21 @@ const ENHANCEMENT_OPTIONS: EnhancementOption[] = [
     label: 'Rephrase',
     icon: <Wand2 className="w-5 h-5 stroke-[2.5]" />,
     description: 'Reword the text with fresh perspective',
-    prompt: 'Rephrase the following text while keeping the same meaning but using different words and structure. Only return the rephrased text, nothing else:\n\n',
+    prompt: 'Rephrase the following text while keeping the same meaning but using different words and structure. Make it more engaging and professional. Only return the rephrased text, nothing else:\n\n',
   },
   {
     id: 'grammar',
     label: 'Grammar Check',
     icon: <CheckCircle className="w-5 h-5 stroke-[2.5]" />,
     description: 'Fix grammar and spelling errors',
-    prompt: 'Fix all grammar, spelling, and punctuation errors in the following text. Keep the original meaning and tone. Only return the corrected text, nothing else:\n\n',
+    prompt: 'Fix all grammar, spelling, and punctuation errors in the following text. Keep the original meaning and tone. Suggest better phrasing if appropriate. Only return the corrected text, nothing else:\n\n',
   },
   {
     id: 'tone',
     label: 'Adjust Tone',
     icon: <Palette className="w-5 h-5 stroke-[2.5]" />,
     description: 'Make it more professional or casual',
-    prompt: 'Rewrite the following text to be more professional and formal. Only return the modified text, nothing else:\n\n',
+    prompt: 'Rewrite the following text to be more professional and formal. Use sophisticated vocabulary and proper business communication style. Only return the modified text, nothing else:\n\n',
   },
   {
     id: 'simplify',
@@ -65,6 +65,34 @@ const ENHANCEMENT_OPTIONS: EnhancementOption[] = [
     icon: <Minimize2 className="w-5 h-5 stroke-[2.5]" />,
     description: 'Make it more concise',
     prompt: 'Summarize the following text into a concise version that keeps all the key points. Make it brief but comprehensive. Only return the summary, nothing else:\n\n',
+  },
+  {
+    id: 'improve',
+    label: 'Improve Writing',
+    icon: <Sparkles className="w-5 h-5 stroke-[2.5]" />,
+    description: 'Enhance clarity, flow, and impact',
+    prompt: 'Improve the following text by enhancing clarity, flow, and impact. Fix any awkward phrasing, improve sentence structure, and make it more compelling. Only return the improved text, nothing else:\n\n',
+  },
+  {
+    id: 'academic',
+    label: 'Academic Style',
+    icon: <GraduationCap className="w-5 h-5 stroke-[2.5]" />,
+    description: 'Convert to academic writing style',
+    prompt: 'Rewrite the following text in academic style using formal language, proper citations format, and scholarly tone. Use appropriate terminology for academic writing. Only return the academic version, nothing else:\n\n',
+  },
+  {
+    id: 'business',
+    label: 'Business Style',
+    
+    description: 'Convert to business writing style',
+    prompt: 'Rewrite the following text in professional business style using clear, concise language appropriate for corporate communication. Focus on action-oriented language and professional tone. Only return the business version, nothing else:\n\n',
+  },
+  {
+    id: 'creative',
+    label: 'Creative Style',
+    icon: <Lightbulb className="w-5 h-5 stroke-[2.5]" />,
+    description: 'Make it more creative and engaging',
+    prompt: 'Rewrite the following text in a more creative and engaging style. Use vivid language, storytelling elements, and compelling descriptions. Only return the creative version, nothing else:\n\n',
   },
 ];
 
@@ -107,27 +135,18 @@ export function AITextEnhancer({
 
       const prompt = option.prompt + selectedText;
 
-      // Use the same API configuration as the AI sidebar
+      // Use Supabase Edge Function for better security
       const response = await fetch(
-        'https://openrouter.ai/api/v1/chat/completions',
+        'https://behebhohabohiiparyie.supabase.co/functions/v1/openrouter',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer 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',
-            'HTTP-Referer': 'https://papermorph.com',
-            'X-Title': 'Papermorph',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlaGViaG9oYWJvaGlpcGFyeWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg2NDQyMDksImV4cCI6MjA4NDIyMDIwOX0.3p0iFtzKq0FCaTARslaKatEMd5JvGclfYeLBFNdioyc'
           },
           body: JSON.stringify({
-            model: 'tngtech/tng-r1t-chimera:free',
-            messages: [
-              {
-                role: 'user',
-                content: prompt,
-              },
-            ],
-            max_tokens: 2000,
-            temperature: 0.7,
+            prompt: prompt,
+            model: 'anthropic/claude-3.5-sonnet'
           }),
         }
       );

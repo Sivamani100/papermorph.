@@ -10,7 +10,6 @@ import { TextSelectionMenu } from './TextSelectionMenu';
 import { useEditorStore } from '@/state/useEditorStore';
 import { useUserStore } from '@/state/useUserStore';
 import { useDocStore } from '@/state/useDocStore';
-import { enhanceHtmlAlignment } from '@/utils/documentParser';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
@@ -218,26 +217,105 @@ const DocumentEditor: React.FC = () => {
     }
   }, []);
 
-  // Handle applying enhanced text back to editor
+  // Handle applying enhanced text back to editor with formatting preservation
   const handleApplyEnhancedText = useCallback((newText: string) => {
     if (!editorRef.current?.documentEditor || !selectedText) return;
 
     const editor = editorRef.current.documentEditor;
-    const selection = editor.selection;
 
     try {
-      // Delete the selected text
-      if (selection && selection.text) {
-        editor.editor?.delete();
-      }
+      console.log('[AIEnhancer] Applying enhanced text with formatting preservation');
+      console.log('[AIEnhancer] Original text:', selectedText);
+      console.log('[AIEnhancer] Enhanced text:', newText);
       
-      // Insert the new text
-      editor.editor?.insertText(newText);
+      // Focus the editor first to ensure operations work
+      editor.focus();
+      
+      // Ensure we have the selection
+      const selection = editor.selection;
+      if (!selection || !selection.text) {
+        console.warn('[AIEnhancer] No selection found');
+        toast.error('Text selection was lost');
+        return;
+      }
+
+      // Get the current paragraph's formatting to preserve alignment and spacing
+      let currentParagraphHtml = '';
+      try {
+        // Get the formatting of the current paragraph
+        const currentFormat = editor.getFormat?.();
+        const alignment = currentFormat?.paragraph?.alignment || 'Left';
+        const beforeSpacing = currentFormat?.paragraph?.beforeSpacing || 0;
+        const afterSpacing = currentFormat?.paragraph?.afterSpacing || 0;
+        const lineSpacing = currentFormat?.paragraph?.lineSpacing || 1.5;
+        const leftIndent = currentFormat?.paragraph?.leftIndent || 0;
+        const firstLineIndent = currentFormat?.paragraph?.firstLineIndent || 0;
+        
+        // Map Syncfusion alignment to CSS
+        const alignmentClass = alignment === 'Center' ? 'center' 
+          : alignment === 'Right' ? 'right'
+          : alignment === 'Justify' ? 'justify'
+          : 'left';
+        
+        // Build style string with all preserved formatting
+        let styleString = `text-align: ${alignmentClass};`;
+        
+        if (beforeSpacing) {
+          styleString += `margin-top: ${beforeSpacing}pt;`;
+        }
+        if (afterSpacing) {
+          styleString += `margin-bottom: ${afterSpacing}pt;`;
+        }
+        if (leftIndent) {
+          styleString += `margin-left: ${leftIndent}pt;`;
+        }
+        if (firstLineIndent) {
+          styleString += `text-indent: ${firstLineIndent}pt;`;
+        }
+        if (lineSpacing && lineSpacing !== 1) {
+          styleString += `line-height: ${lineSpacing};`;
+        }
+        
+        // Create HTML that preserves the paragraph structure and formatting
+        currentParagraphHtml = `<p style="${styleString}">${newText.replace(/\n/g, '<br>')}</p>`;
+        console.log('[AIEnhancer] Generated HTML with full formatting:', { alignment: alignmentClass, beforeSpacing, afterSpacing, leftIndent, firstLineIndent, lineSpacing });
+      } catch (error) {
+        console.warn('[AIEnhancer] Could not generate formatted HTML, using plain text:', error);
+        currentParagraphHtml = newText;
+      }
+
+      // Delete the selected text first
+      editor.editor?.delete?.();
+      
+      // Method 1: Try pasteHtml (Syncfusion's native method for HTML with formatting)
+      if (typeof editor.pasteHtml === 'function') {
+        editor.pasteHtml(currentParagraphHtml);
+        console.log('[AIEnhancer] Applied using pasteHtml');
+        setSelectionMenuVisible(false);
+        setSelectedText('');
+        toast.success('Text enhanced with full formatting preserved');
+        return;
+      }
+
+      // Method 2: Try editor.editor.pasteHtml
+      if (editor.editor && typeof editor.editor.pasteHtml === 'function') {
+        editor.editor.pasteHtml(currentParagraphHtml);
+        console.log('[AIEnhancer] Applied using editor.editor.pasteHtml');
+        setSelectionMenuVisible(false);
+        setSelectedText('');
+        toast.success('Text enhanced with full formatting preserved');
+        return;
+      }
+
+      // Method 3: Fallback to insertText
+      console.log('[AIEnhancer] Falling back to insertText');
+      editor.editor?.insertText?.(newText);
       
       setSelectionMenuVisible(false);
       setSelectedText('');
+      toast.success('Text enhanced (fallback applied)');
     } catch (error) {
-      console.error('Failed to apply enhanced text:', error);
+      console.error('[AIEnhancer] Failed to apply enhanced text:', error);
       toast.error('Failed to apply text changes');
     }
   }, [selectedText]);
@@ -880,13 +958,10 @@ const DocumentEditor: React.FC = () => {
     // Handle AI content application
     const handleApplyToDocument = (event: Event) => {
       const customEvent = event as CustomEvent<{ content: string }>;
-      let content = customEvent.detail?.content;
+      const content = customEvent.detail?.content;
       if (content && editorRef.current?.documentEditor) {
         const editor = editorRef.current.documentEditor;
         try {
-          // Enhance HTML with proper alignment before applying
-          content = enhanceHtmlAlignment(content);
-          
           // Focus the editor first to ensure paste operations work
           editor.focus();
           
