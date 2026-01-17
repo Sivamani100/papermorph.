@@ -135,14 +135,14 @@ export function AITextEnhancer({
 
       const prompt = option.prompt + selectedText;
 
-      // Use Supabase Edge Function for better security
+      // Use Supabase Edge Function for secure API calls (API key is server-side only)
       const response = await fetch(
         'https://behebhohabohiiparyie.supabase.co/functions/v1/openrouter',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlaGViaG9oYWJvaGlpcGFyeWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg2NDQyMDksImV4cCI6MjA4NDIyMDIwOX0.3p0iFtzKq0FCaTARslaKatEMd5JvGclfYeLBFNdioyc'
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
           },
           body: JSON.stringify({
             prompt: prompt,
