@@ -5,9 +5,12 @@ import { SidebarLeft } from './SidebarLeft';
 import { SidebarRight } from './SidebarRight';
 import MainToolbar from './editor/Toolbar';
 import StatusBar from './StatusBar';
+import { AITextEnhancer } from './AITextEnhancer';
+import { TextSelectionMenu } from './TextSelectionMenu';
 import { useEditorStore } from '@/state/useEditorStore';
 import { useUserStore } from '@/state/useUserStore';
 import { useDocStore } from '@/state/useDocStore';
+import { enhanceHtmlAlignment } from '@/utils/documentParser';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
@@ -33,6 +36,12 @@ const DocumentEditor: React.FC = () => {
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isAutoSaving, setIsAutoSaving] = useState(false);
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  // AI Text Enhancement state
+  const [selectedText, setSelectedText] = useState('');
+  const [isEnhancerOpen, setIsEnhancerOpen] = useState(false);
+  const [selectionMenuVisible, setSelectionMenuVisible] = useState(false);
+  const [menuPosition, setMenuPosition] = useState<{ x: number; y: number } | null>(null);
 
   // Apply theme from global store
   useEffect(() => {
@@ -178,6 +187,60 @@ const DocumentEditor: React.FC = () => {
     
     setActiveFormats(formats);
   }, []);
+
+  // Handle text selection for AI enhancement
+  const handleTextSelection = useCallback(() => {
+    if (!editorRef.current?.documentEditor) return;
+
+    const editor = editorRef.current.documentEditor;
+    const selection = editor.selection;
+
+    if (selection && selection.text && selection.text.trim().length > 0) {
+      setSelectedText(selection.text);
+      
+      // Get selection position for menu placement
+      const selectionStart = selection.startOffset;
+      if (selectionStart !== null) {
+        // Position menu near the selection (below and centered)
+        const editorElement = document.getElementById('documentEditor');
+        if (editorElement) {
+          const rect = editorElement.getBoundingClientRect();
+          setMenuPosition({
+            x: rect.left + 20,
+            y: rect.top + 100,
+          });
+        }
+      }
+      
+      setSelectionMenuVisible(true);
+    } else {
+      setSelectionMenuVisible(false);
+    }
+  }, []);
+
+  // Handle applying enhanced text back to editor
+  const handleApplyEnhancedText = useCallback((newText: string) => {
+    if (!editorRef.current?.documentEditor || !selectedText) return;
+
+    const editor = editorRef.current.documentEditor;
+    const selection = editor.selection;
+
+    try {
+      // Delete the selected text
+      if (selection && selection.text) {
+        editor.editor?.delete();
+      }
+      
+      // Insert the new text
+      editor.editor?.insertText(newText);
+      
+      setSelectionMenuVisible(false);
+      setSelectedText('');
+    } catch (error) {
+      console.error('Failed to apply enhanced text:', error);
+      toast.error('Failed to apply text changes');
+    }
+  }, [selectedText]);
 
   // Save document
   const handleSave = useCallback(() => {
@@ -817,10 +880,74 @@ const DocumentEditor: React.FC = () => {
     // Handle AI content application
     const handleApplyToDocument = (event: Event) => {
       const customEvent = event as CustomEvent<{ content: string }>;
-      const content = customEvent.detail?.content;
+      let content = customEvent.detail?.content;
       if (content && editorRef.current?.documentEditor) {
-        editorRef.current.documentEditor.editor?.insertText(content);
-        toast.success('AI content applied');
+        const editor = editorRef.current.documentEditor;
+        try {
+          // Enhance HTML with proper alignment before applying
+          content = enhanceHtmlAlignment(content);
+          
+          // Focus the editor first to ensure paste operations work
+          editor.focus();
+          
+          // Method 1: Try pasteHtml (Syncfusion's method for pasting HTML with formatting)
+          if (typeof editor.pasteHtml === 'function') {
+            editor.pasteHtml(content);
+            toast.success('AI content applied');
+            return;
+          }
+          
+          // Method 2: Try editor.pasteHtml
+          if (editor.editor && typeof editor.editor.pasteHtml === 'function') {
+            editor.editor.pasteHtml(content);
+            toast.success('AI content applied');
+            return;
+          }
+          
+          // Method 3: Use the paste API via clipboard
+          // This is a more reliable way to insert HTML while preserving formatting
+          const blob = new Blob([content], { type: 'text/html' });
+          const richTextFormat = new ClipboardItem({ 'text/html': blob });
+          
+          navigator.clipboard.write([richTextFormat])
+            .then(() => {
+              // Now simulate a paste by triggering the editor's paste handler
+              const pasteEvent = new KeyboardEvent('paste', {
+                key: 'v',
+                ctrlKey: true,
+                bubbles: true,
+              });
+              
+              const editorElement = document.getElementById('documentEditor');
+              if (editorElement) {
+                editorElement.focus();
+                editorElement.dispatchEvent(pasteEvent);
+                // Also try using execCommand
+                try {
+                  document.execCommand('paste', false);
+                } catch (e) {
+                  console.log('execCommand paste not supported:', e);
+                }
+              }
+              
+              toast.success('AI content applied');
+            })
+            .catch(err => {
+              console.error('Clipboard write failed, using fallback:', err);
+              // Fallback: insert as plain text with formatting info preserved
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = content;
+              editor.editor?.insertText(tempDiv.innerText);
+              toast.success('AI content applied (text format)');
+            });
+        } catch (error) {
+          console.error('Failed to apply AI content:', error);
+          // Ultimate fallback - insert as plain text
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = content;
+          editor.editor?.insertText(tempDiv.innerText);
+          toast.success('AI content applied (text format)');
+        }
       }
     };
 
@@ -831,6 +958,65 @@ const DocumentEditor: React.FC = () => {
       window.removeEventListener('applyToDocument', handleApplyToDocument);
     };
   }, []);
+
+  // Handle text selection for AI enhancement
+  useEffect(() => {
+    if (!isReady || !editorRef.current?.documentEditor) return;
+
+    const editor = editorRef.current.documentEditor;
+    const editorElement = document.getElementById('documentEditor');
+
+    // Listen for mouse up (text selection via mouse)
+    const handleMouseUp = () => {
+      setTimeout(() => handleTextSelection(), 100);
+    };
+
+    // Listen for keyboard selection
+    const handleKeyUp = (e: KeyboardEvent) => {
+      // Check for Shift+arrow keys (text selection)
+      if (e.shiftKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+        setTimeout(() => handleTextSelection(), 50);
+      }
+    };
+
+    // Listen for selection change on the editor
+    const handleSelectionChange = () => {
+      handleTextSelection();
+    };
+
+    if (editorElement) {
+      editorElement.addEventListener('mouseup', handleMouseUp);
+      editorElement.addEventListener('keyup', handleKeyUp);
+    }
+
+    // Also listen on document for broader selection events
+    document.addEventListener('selectionchange', handleSelectionChange);
+
+    return () => {
+      if (editorElement) {
+        editorElement.removeEventListener('mouseup', handleMouseUp);
+        editorElement.removeEventListener('keyup', handleKeyUp);
+      }
+      document.removeEventListener('selectionchange', handleSelectionChange);
+    };
+  }, [isReady, handleTextSelection]);
+
+  // Close selection menu when clicking elsewhere
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const editorElement = document.getElementById('documentEditor');
+      const menuElement = (e.target as HTMLElement).closest('[role="button"]');
+      
+      if (!editorElement?.contains(e.target as Node) && !menuElement) {
+        setSelectionMenuVisible(false);
+      }
+    };
+
+    if (selectionMenuVisible) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [selectionMenuVisible]);
 
   return (
     <div className="flex flex-col h-screen bg-background overflow-hidden">
@@ -904,6 +1090,24 @@ const DocumentEditor: React.FC = () => {
           <SidebarRight />
         </div>
       </div>
+
+      {/* Text Selection Menu */}
+      <TextSelectionMenu
+        isVisible={selectionMenuVisible}
+        position={menuPosition}
+        onOpenEnhancer={() => {
+          setIsEnhancerOpen(true);
+          setSelectionMenuVisible(false);
+        }}
+      />
+
+      {/* AI Text Enhancer Dialog */}
+      <AITextEnhancer
+        isOpen={isEnhancerOpen}
+        selectedText={selectedText}
+        onClose={() => setIsEnhancerOpen(false)}
+        onApply={handleApplyEnhancedText}
+      />
     </div>
   );
 };

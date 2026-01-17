@@ -6,6 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { TemplateCard } from './TemplateCard';
 import { ToolsPanel } from './ToolsPanel';
 import OutlinePanel from './OutlinePanel';
+import { ImportPreviewModal } from './ImportPreviewModal';
 import { useDocStore, type Document } from '@/state/useDocStore';
 import { LEFT_SIDEBAR_TABS } from '@/constants';
 import { useEditorStore } from '@/state/useEditorStore';
@@ -15,8 +16,10 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { enhanceHtmlAlignment } from '@/utils/documentParser';
 import { toast } from 'sonner';
 import { BUILT_IN_TEMPLATES, searchTemplates, getTemplatesByCategory } from '@/utils/templateLoader';
+import { parseDocument, type ParsedContent } from '@/utils/documentParser';
 import {
   FileText,
   PenTool,
@@ -142,6 +145,13 @@ export function SidebarLeft() {
   const [exportFormat, setExportFormat] = useState('pdf');
   const [exportLoading, setExportLoading] = useState(false);
   const [bookmarks, setBookmarks] = useState<Array<{ id: string; name: string; pos: number }>>([]);
+  
+  // Import preview state
+  const [showImportPreview, setShowImportPreview] = useState(false);
+  const [importPreviewFile, setImportPreviewFile] = useState<File | null>(null);
+  const [importPreviewContent, setImportPreviewContent] = useState<ParsedContent | null>(null);
+  const [importPreviewLoading, setImportPreviewLoading] = useState(false);
+
   const [favorites, setFavorites] = useState<string[]>(() => {
     try {
       const raw = localStorage.getItem('pm:favorites') || '[]';
@@ -922,24 +932,66 @@ Chart placeholder - ${chartType} chart would be rendered here
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.txt,.doc,.docx,.html,.md';
-    input.onchange = (e: Event) => {
+    input.onchange = async (e: Event) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          let content = reader.result as string;
+        console.log(`[Import] Selected file: ${file.name} (${(file.size / 1024).toFixed(2)}KB, ${file.type})`);
+        
+        // Show preview modal while parsing
+        setImportPreviewFile(file);
+        setShowImportPreview(true);
+        setImportPreviewLoading(true);
+
+        try {
+          // Parse the document
+          console.log(`[Import] Starting parse for: ${file.name}`);
+          const parsed = await parseDocument(file);
+          console.log(`[Import] Parse complete. Text length: ${parsed.text.length}, Images: ${parsed.images.length}, Tables: ${parsed.tables.length}`);
           
-          // Convert to plain text by removing HTML tags
-          content = content.replace(/<[^>]*>/g, '').trim();
-          
-          const fileName = file.name.replace(/\.[^/.]+$/, '');
-          createDocumentWithContent(fileName, content);
-          toast.success(`Imported "${file.name}"`);
-        };
-        reader.readAsText(file);
+          setImportPreviewContent(parsed);
+        } catch (error) {
+          console.error('[Import] Error parsing document:', error);
+          toast.error('Failed to parse document. Please try a different file.');
+          setShowImportPreview(false);
+        } finally {
+          setImportPreviewLoading(false);
+        }
       }
     };
     input.click();
+  };
+
+  const handleImportConfirm = async () => {
+    if (!importPreviewFile || !importPreviewContent) return;
+
+    try {
+      setImportPreviewLoading(true);
+      console.log(`[Import] Confirming import for: ${importPreviewFile.name}`);
+      
+      // Use the HTML content from parsed document
+      const fileName = importPreviewFile.name.replace(/\.[^/.]+$/, '');
+      let htmlContent = importPreviewContent.html;
+
+      // Enhance alignment for all block elements
+      htmlContent = enhanceHtmlAlignment(htmlContent);
+
+      console.log(`[Import] Creating document with ${htmlContent.length} characters of HTML content`);
+      
+      // Create document with the formatted content
+      createDocumentWithContent(fileName, htmlContent);
+      
+      toast.success(`Imported "${importPreviewFile.name}" successfully! ✨`);
+      setShowImportPreview(false);
+      setImportPreviewFile(null);
+      setImportPreviewContent(null);
+      
+      console.log(`[Import] Successfully imported: ${fileName}`);
+    } catch (error) {
+      console.error('[Import] Error importing document:', error);
+      toast.error('Failed to import document');
+    } finally {
+      setImportPreviewLoading(false);
+    }
   };
 
   const filteredTemplates = searchQuery ? searchTemplates(searchQuery) : BUILT_IN_TEMPLATES;
@@ -2533,6 +2585,20 @@ Chart placeholder - ${chartType} chart would be rendered here
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Import Preview Modal */}
+      <ImportPreviewModal
+        isOpen={showImportPreview}
+        onClose={() => {
+          setShowImportPreview(false);
+          setImportPreviewFile(null);
+          setImportPreviewContent(null);
+        }}
+        onConfirm={handleImportConfirm}
+        fileName={importPreviewFile?.name || ''}
+        parsedContent={importPreviewContent}
+        isLoading={importPreviewLoading}
+      />
     </div>
     </TooltipProvider>
   );

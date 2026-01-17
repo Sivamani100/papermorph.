@@ -1,0 +1,287 @@
+/* Document Import & Display Styles */
+
+/* Preserve document formatting when imported */
+.document-content,
+.document-preview {
+  font-family: 'Calibri', 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  color: inherit;
+  text-align: left;
+}
+
+/* Default left alignment for all block-level elements */
+.document-content *,
+.document-preview * {
+  text-align: left;
+}
+
+/* Paragraph spacing */
+.document-content p,
+.document-preview p {
+  margin: 0.5em 0;
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* Headings */
+.document-content h1,
+.document-preview h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0.8em 0 0.4em 0;
+  text-align: left;
+}
+
+.document-content h2,
+.document-preview h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.7em 0 0.35em 0;
+  text-align: left;
+}
+
+.document-content h3,
+.document-preview h3 {
+  font-size: 1.25em;
+  font-weight: bold;
+  margin: 0.6em 0 0.3em 0;
+  text-align: left;
+}
+
+/* Text formatting */
+.document-content strong,
+.document-preview strong {
+  font-weight: 700;
+}
+
+.document-content em,
+.document-preview em {
+  font-style: italic;
+}
+
+.document-content u,
+.document-preview u {
+  text-decoration: underline;
+}
+
+/* Lists */
+.document-content ul,
+.document-preview ul {
+  margin: 0.5em 0;
+  padding-left: 2em;
+  list-style-type: disc;
+  text-align: left;
+}
+
+.document-content ol,
+.document-preview ol {
+  margin: 0.5em 0;
+  padding-left: 2em;
+  list-style-type: decimal;
+  text-align: left;
+}
+
+.document-content li,
+.document-preview li {
+  margin: 0.25em 0;
+  text-align: left;
+}
+
+.document-content ul ul,
+.document-preview ul ul {
+  list-style-type: circle;
+  margin: 0.25em 0;
+}
+
+.document-content ul ul ul,
+.document-preview ul ul ul {
+  list-style-type: square;
+}
+
+/* Tables */
+.document-table,
+.document-content table,
+.document-preview table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+  border: 1px solid #d0d0d0;
+  background-color: #ffffff;
+}
+
+.document-table tbody,
+.document-table thead,
+.document-table tr {
+  border: 1px solid #d0d0d0;
+}
+
+.document-table th,
+.document-content table th,
+.document-preview table th {
+  background-color: #f5f5f5;
+  border: 1px solid #d0d0d0;
+  padding: 0.75em;
+  text-align: left;
+  font-weight: bold;
+}
+
+.document-table td,
+.document-content table td,
+.document-preview table td {
+  border: 1px solid #d0d0d0;
+  padding: 0.75em;
+  text-align: left;
+  vertical-align: top;
+}
+
+/* Images */
+.document-content img,
+.document-preview img {
+  max-width: 100%;
+  height: auto;
+  margin: 0.5em 0;
+  border-radius: 4px;
+}
+
+/* Blockquotes */
+.document-content blockquote,
+.document-preview blockquote {
+  border-left: 4px solid #d0d0d0;
+  padding-left: 1em;
+  margin: 0.5em 0;
+  color: #666;
+  font-style: italic;
+  text-align: left;
+}
+
+.document-content blockquote p,
+.document-preview blockquote p {
+  text-align: left;
+}
+
+/* Code blocks */
+.document-content code,
+.document-preview code {
+  background-color: #f5f5f5;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  text-align: left;
+}
+
+.document-content pre,
+.document-preview pre {
+  background-color: #f5f5f5;
+  padding: 1em;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 0.5em 0;
+  text-align: left;
+}
+
+.document-content pre code,
+.document-preview pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.85em;
+}
+
+/* Horizontal rules */
+.document-content hr,
+.document-preview hr {
+  border: none;
+  border-top: 1px solid #d0d0d0;
+  margin: 1em 0;
+}
+
+/* Text alignment */
+.document-content [style*="text-align: center"],
+.document-preview [style*="text-align: center"],
+.document-content p[align="center"],
+.document-preview p[align="center"] {
+  text-align: center;
+}
+
+.document-content [style*="text-align: right"],
+.document-preview [style*="text-align: right"],
+.document-content p[align="right"],
+.document-preview p[align="right"] {
+  text-align: right;
+}
+
+.document-content [style*="text-align: justify"],
+.document-preview [style*="text-align: justify"],
+.document-content p[align="justify"],
+.document-preview p[align="justify"] {
+  text-align: justify;
+}
+
+/* Print styles for better document appearance */
+@media print {
+  .document-content,
+  .document-preview {
+    page-break-inside: avoid;
+  }
+
+  .document-content h1,
+  .document-content h2,
+  .document-content h3,
+  .document-preview h1,
+  .document-preview h2,
+  .document-preview h3 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  .document-table,
+  .document-content table,
+  .document-preview table {
+    page-break-inside: avoid;
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .document-content,
+  .document-preview {
+    color: #e0e0e0;
+  }
+
+  .document-table th,
+  .document-content table th,
+  .document-preview table th {
+    background-color: #374151;
+    border-color: #555;
+  }
+
+  .document-table td,
+  .document-content table td,
+  .document-preview table td {
+    border-color: #555;
+  }
+
+  .document-table,
+  .document-content table,
+  .document-preview table {
+    border-color: #555;
+    background-color: #1a1a1a;
+  }
+
+  .document-content code,
+  .document-preview code {
+    background-color: #333;
+    color: #e0e0e0;
+  }
+
+  .document-content pre,
+  .document-preview pre {
+    background-color: #333;
+  }
+
+  .document-content blockquote,
+  .document-preview blockquote {
+    color: #999;
+    border-left-color: #555;
+  }
+}

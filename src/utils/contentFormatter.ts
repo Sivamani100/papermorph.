@@ -1,14 +1,15 @@
 /**
- * Utility to format HTML content for proper insertion into TipTap editor
- * Preserves spacing, table formatting, colors, and all styling from the preview
+ * Utility to format HTML content for proper insertion into document editor
+ * Preserves spacing, table formatting, colors, font sizes, weights, and all styling
  */
 
 /**
  * Format HTML content to preserve exact preview appearance when inserted into editor
  * - Adds proper spacing preservation to paragraphs
  * - Ensures tables maintain their structure
- * - Preserves line heights, margins, and colors
+ * - Preserves line heights, margins, colors, font sizes, and weights
  * - Maintains text decorations and formatting
+ * - Keeps bold, italic, underline, and other character formatting
  */
 export function formatHTMLForInsertion(html: string): string {
   if (!html) return '';
@@ -21,18 +22,22 @@ export function formatHTMLForInsertion(html: string): string {
   formatted = formatted.replace(/<s([^>]*)>/gi, '<s style="text-decoration: line-through;">');
   formatted = formatted.replace(/<em([^>]*)>/gi, '<em style="font-style: italic;">');
   formatted = formatted.replace(/<strong([^>]*)>/gi, '<strong style="font-weight: bold;">');
+  
+  // Preserve <b> and <i> tags
+  formatted = formatted.replace(/<b([^>]*)>/gi, '<b style="font-weight: bold;">');
+  formatted = formatted.replace(/<i([^>]*)>/gi, '<i style="font-style: italic;">');
 
-  // Ensure paragraphs have proper spacing and preserve existing colors
+  // Ensure paragraphs have proper spacing and preserve existing colors and font settings
   formatted = formatted.replace(/<p([^>]*)>/gi, (match, attrs) => {
     // Check if style already exists - preserve it, just add margin/line-height if needed
     if (attrs.includes('style')) {
       const styleMatch = attrs.match(/style="([^"]*)"/);
       if (styleMatch && !styleMatch[1].includes('margin') && !styleMatch[1].includes('line-height')) {
-        return `<p${attrs.replace(/style="([^"]*)"/, `style="$1; margin: 1em 0; line-height: 1.6;"`)}>`;
+        return `<p${attrs.replace(/style="([^"]*)"/, `style="$1; margin: 0.5em 0; line-height: 1.6;"`)}>`;
       }
       return match;
     }
-    return `<p${attrs} style="margin: 1em 0; line-height: 1.6;">`;
+    return `<p${attrs} style="margin: 0.5em 0; line-height: 1.6;">`;
   });
 
   // Ensure tables have proper formatting and don't collapse
@@ -77,7 +82,16 @@ export function formatHTMLForInsertion(html: string): string {
     return `<div${attrs} style="margin: 0.5em 0;">`;
   });
 
-  // Ensure line breaks are preserved
+  // Ensure heading tags preserve their styling
+  formatted = formatted.replace(/<h([1-6])([^>]*)>/gi, (match, level, attrs) => {
+    if (attrs.includes('style')) {
+      return match;
+    }
+    const sizes: {[key: string]: string} = { '1': '28px', '2': '24px', '3': '20px', '4': '16px', '5': '14px', '6': '12px' };
+    return `<h${level}${attrs} style="font-weight: bold; margin: 0.5em 0; line-height: 1.4; font-size: ${sizes[level]};">`;
+  });
+
+  // Preserve line breaks with proper styling
   formatted = formatted.replace(/<br([^>]*)>/gi, '<br style="line-height: 1.6;">');
 
   return formatted;
