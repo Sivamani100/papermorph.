@@ -3,6 +3,12 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
   "env": {
     "VITE_SUPABASE_URL": "https://behebhohabohiiparyie.supabase.co",
     "VITE_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlaGViaG9oYWJvaGlpcGFyeWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg2NDQyMDksImV4cCI6MjA4NDIyMDIwOX0.3p0iFtzKq0FCaTARslaKatEMd5JvGclfYeLBFNdioyc"

@@ -56,7 +56,10 @@ Deno.serve(async (req: Request) => {
     
     if (!openrouterApiKey) {
       return new Response(
-        JSON.stringify({ error: 'OpenRouter API key not configured' }),
+        JSON.stringify({ 
+          error: 'OpenRouter API key not configured',
+          message: 'Please set OPENROUTER_API_KEY in Supabase Edge Functions secrets'
+        }),
         { 
           status: 500,
           headers: {
